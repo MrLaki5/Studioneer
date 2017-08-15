@@ -19,6 +19,14 @@ namespace WebRole1.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult ReadRegister()
+        {
+            string Name = Request.Form["name"];
+            ViewBag.title = Name;
+            return Login();
+        }
+
     }
 
 }
