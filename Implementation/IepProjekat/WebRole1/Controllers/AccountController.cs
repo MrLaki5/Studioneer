@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
+using System.Data.Entity;
+using System.Net;
+using WebRole1.Models;
 
 namespace WebRole1.Controllers
 {
+
     public class AccountController : Controller
     {
+        private Model1 db = new Model1();
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -59,6 +66,17 @@ namespace WebRole1.Controllers
             catch {
                 return Content("Email is not valid", "text/plain");
             }
+
+            User user = new User();
+            user.Mail = email;
+            user.Name = name;
+            user.Lastname = "kurac";
+            user.Password = password;
+            user.Balans = 0;
+            user.Type = "User";
+
+            db.User.Add(user);
+            db.SaveChanges();
 
             return Content("Proba123", "text/plain");
         }

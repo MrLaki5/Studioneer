@@ -352,3 +352,7 @@ C:\Users\dragan\Desktop\LepProjekat\auctioneer\Implementation\IepProjekat\WebRol
 C:\Users\dragan\Desktop\LepProjekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
 C:\Users\dragan\Desktop\LepProjekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.dll
 C:\Users\dragan\Desktop\LepProjekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.pdb
+C:\Users\mimar\Desktop\auctioneer\Implementation\IepProjekat\WebRole1\bin\EntityFramework.dll
+C:\Users\mimar\Desktop\auctioneer\Implementation\IepProjekat\WebRole1\bin\EntityFramework.SqlServer.dll
+C:\Users\mimar\Desktop\auctioneer\Implementation\IepProjekat\WebRole1\bin\EntityFramework.xml
+C:\Users\mimar\Desktop\auctioneer\Implementation\IepProjekat\WebRole1\bin\EntityFramework.SqlServer.xml
