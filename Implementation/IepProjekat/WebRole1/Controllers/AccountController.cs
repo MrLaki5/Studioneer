@@ -8,23 +8,23 @@ namespace WebRole1.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Acount
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult ReadRegister()
+        public ActionResult Register(string email, string name, string password, string cpassword)
         {
-            string Name = Request.Form["name"];
-            ViewBag.title = Name;
-            return Login();
+            
+            return RedirectToAction("Login", "Account");
         }
 
     }
