@@ -83,13 +83,16 @@
             var Name = $('#name').val();
             var Password = $('#password').val();
             var Cpassword = $('#cpassword').val();
-            
+
             $.ajax({
                 type: "POST",
-                data: {email: Email, name: Name, password: Password, cpassword: Cpassword},
+                data: { email: Email, name: Name, password: Password, cpassword: Cpassword },
                 url: '@Url.Action("Register","Account")',
                 success: function (result) {
                     $('#result').html(result);
+                    if (new String("Created").valueOf() == new String(result).valueOf()) {
+                        window.location = "@Url.Action("Login", "Account")";
+                    }
                 }
             });
         });

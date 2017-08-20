@@ -43,7 +43,15 @@ namespace WebRole1.Controllers
                 return Content("Email is not valid", "text/plain");
             }
 
-            return Content("Proba123", "text/plain");
+            var users = from m in db.User select m;
+            users = users.Where(s => s.Mail.Equals(email)).Where(s=> s.Password.Equals(password));
+            if (users.Any())
+            {
+                return Content("Success", "text/plain");
+            }
+
+            return Content("Wrong email or password", "text/plain");
+
         }
 
         [HttpPost]
@@ -91,7 +99,7 @@ namespace WebRole1.Controllers
             db.User.Add(user);
             db.SaveChanges();
 
-            return Content("Proba123", "text/plain");
+            return Content("Created", "text/plain");
         }
 
     }
