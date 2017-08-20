@@ -32,6 +32,11 @@ namespace WebRole1.Controllers
             return View();
         }
 
+        public void Logout() {
+            Session.Clear();
+            RedirectToAction("Login", "Account");
+        }
+
         [HttpPost]
         public ActionResult Login(string email, string password)
         {
@@ -52,6 +57,9 @@ namespace WebRole1.Controllers
             users = users.Where(s => s.Mail.Equals(email)).Where(s=> s.Password.Equals(password));
             if (users.Any())
             {
+                User user = users.First();
+                Session["username"] = user.Name;
+                Session["type"] = user.Type;
                 return Content("Success", "text/plain");
             }
 

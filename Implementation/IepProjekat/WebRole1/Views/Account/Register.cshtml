@@ -87,7 +87,7 @@
                 url: '@Url.Action("Register","Account")',
                 success: function (result) {
                     $('#result').html(result);
-if (new String("Created").valueOf() == new String(result).valueOf()) {
+                    if (new String("Created").valueOf() == new String(result).valueOf()) {
                         window.location = "@Url.Action("Login", "Account")";
                     }
                 }
