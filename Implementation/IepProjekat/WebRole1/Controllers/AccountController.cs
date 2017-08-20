@@ -67,10 +67,23 @@ namespace WebRole1.Controllers
                 return Content("Email is not valid", "text/plain");
             }
 
+            var users = from m in db.User select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any()) {
+                return Content("Email is taken", "text/plain");
+            }
+
+            users = users.Where(s => s.Name.Equals(name));
+            if (users.Any())
+            {
+                return Content("Username is taken", "text/plain");
+            }
+
+
             User user = new User();
             user.Mail = email;
             user.Name = name;
-            user.Lastname = "kurac";
+            user.Lastname = "kurac";        //OBRISATI KADA SE U BAZI OBRISE LASTNAME
             user.Password = password;
             user.Balans = 0;
             user.Type = "User";
