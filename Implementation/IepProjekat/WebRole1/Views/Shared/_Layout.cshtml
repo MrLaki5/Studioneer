@@ -23,12 +23,22 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (!(@HttpContext.Current.Session["username"] == null))
+                    {
+                        <li>@Html.ActionLink("Account", "EditInfo", "Account")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial");
             </div>
         </div>
     </div>
     <div class="container body-content">
+
+        @if (!(@HttpContext.Current.Session["username"] == null))
+        {
+            <h3 class="pull-right">@HttpContext.Current.Session["username"].ToString(), @HttpContext.Current.Session["token"].ToString() tokens.</h3>
+        }
+
         @RenderBody()
         <hr />
         <footer>

@@ -3,11 +3,11 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<hr />
 <form id="Forma">
     @Html.AntiForgeryToken()
     <!--<h4>Create a new account</h4>   -->
-    <hr />
+    
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
     <div class="form-group">
