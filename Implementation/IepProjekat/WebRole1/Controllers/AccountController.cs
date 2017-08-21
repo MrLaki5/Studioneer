@@ -32,9 +32,9 @@ namespace WebRole1.Controllers
             return View();
         }
 
-        public void Logout() {
+        public ActionResult Logout() {
             Session.Clear();
-            RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]

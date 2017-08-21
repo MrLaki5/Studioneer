@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" class="btn btn-default" id="butt1" value="Register" />
+        <input type="button" class="btn btn-default" id="butt1" value="Register" />
     </div>
     <div class="form-group">
         @Html.Label(" ", new { id = "result" })
@@ -75,7 +75,10 @@
                     equalTo: "Password does not match!"
                 },
             }
-        }).submit(function () {
+        });
+        $("#butt1").click(function () {
+            if (!$("#Forma").valid())
+                return;
             var Email = $('#email').val();
             var Name = $('#name').val();
             var Password = $('#password').val();
