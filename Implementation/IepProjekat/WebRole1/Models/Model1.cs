@@ -69,11 +69,7 @@ namespace WebRole1.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<User>()
-                .Property(e => e.Lastname)
+                .Property(e => e.Username)
                 .IsUnicode(false);
 
             modelBuilder.Entity<User>()

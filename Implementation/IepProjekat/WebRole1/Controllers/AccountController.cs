@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Net;
 using WebRole1.Models;
+using System.Web.Security;
 
 namespace WebRole1.Controllers
 {
@@ -52,13 +53,13 @@ namespace WebRole1.Controllers
             {
                 return Content("Email is not valid", "text/plain");
             }
-
+            string password1= FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
             var users = from m in db.User select m;
-            users = users.Where(s => s.Mail.Equals(email)).Where(s=> s.Password.Equals(password));
+            users = users.Where(s => s.Mail.Equals(email)).Where(s=> s.Password.Equals(password1));
             if (users.Any())
             {
                 User user = users.First();
-                Session["username"] = user.Name;
+                Session["username"] = user.Username;
                 Session["type"] = user.Type;
                 return Content("Success", "text/plain");
             }
@@ -94,7 +95,7 @@ namespace WebRole1.Controllers
                 return Content("Email is taken", "text/plain");
             }
 
-            users = users.Where(s => s.Name.Equals(name));
+            users = users.Where(s => s.Username.Equals(name));
             if (users.Any())
             {
                 return Content("Username is taken", "text/plain");
@@ -103,9 +104,8 @@ namespace WebRole1.Controllers
 
             User user = new User();
             user.Mail = email;
-            user.Name = name;
-            user.Lastname = "kurac";        //OBRISATI KADA SE U BAZI OBRISE LASTNAME
-            user.Password = password;
+            user.Username = name;
+            user.Password = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
             user.Balans = 0;
             user.Type = "User";
 

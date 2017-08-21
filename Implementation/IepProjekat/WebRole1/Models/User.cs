@@ -21,15 +21,12 @@ namespace WebRole1.Models
         public int IdU { get; set; }
 
         [StringLength(20)]
-        public string Name { get; set; }
-
-        [StringLength(20)]
-        public string Lastname { get; set; }
+        public string Username { get; set; }
 
         [StringLength(20)]
         public string Mail { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string Password { get; set; }
 
         public int? Balans { get; set; }
