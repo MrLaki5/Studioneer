@@ -27,7 +27,7 @@
                     {
                         if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
                         {
-                            <li>@Html.ActionLink("Account", "EditInfo", "Account")</li>
+                            <li>@Html.ActionLink("Account", "Info", "Account")</li>
                         }
                     }
                 </ul>
