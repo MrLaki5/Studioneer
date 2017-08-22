@@ -10,18 +10,15 @@ namespace WebRole1.Models
     public partial class Order
     {
         [Key]
-        [StringLength(18)]
-        public string IdO { get; set; }
+        public int IdO { get; set; }
 
         public int IdU { get; set; }
 
-        [StringLength(18)]
-        public string Number { get; set; }
+        public int? Number { get; set; }
 
-        [StringLength(18)]
-        public string Price { get; set; }
+        public int? Price { get; set; }
 
-        [StringLength(18)]
+        [StringLength(20)]
         public string State { get; set; }
 
         public virtual User User { get; set; }

@@ -56,12 +56,14 @@ namespace WebRole1.Controllers
                 return Content("Email is not valid", "text/plain");
             }
             string password1= FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
-            var users = from m in db.User select m;
+            var users = from m in db.Users select m;
             users = users.Where(s => s.Mail.Equals(email)).Where(s=> s.Password.Equals(password1));
             if (users.Any())
             {
                 User user = users.First();
-                Session["username"] = user.Username;
+                if (user.Status==0)
+                    return Content("Registration not confirmed", "text/plain");
+                Session["username"] = user.Name;
                 Session["type"] = user.Type;
                 Session["token"] = user.Balans.ToString();
                 return Content("Success", "text/plain");
@@ -72,7 +74,7 @@ namespace WebRole1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(string email, string name, string password, string cpassword)
+        public ActionResult Register(string email, string name, string lastname, string password, string cpassword)
         {
             if (String.IsNullOrEmpty(email))
                 return Content("Enter email", "text/plain");
@@ -92,27 +94,23 @@ namespace WebRole1.Controllers
                 return Content("Email is not valid", "text/plain");
             }
 
-            var users = from m in db.User select m;
+            var users = from m in db.Users select m;
             users = users.Where(s => s.Mail.Equals(email));
             if (users.Any()) {
                 return Content("Email is taken", "text/plain");
             }
 
-            users = users.Where(s => s.Username.Equals(name));
-            if (users.Any())
-            {
-                return Content("Username is taken", "text/plain");
-            }
-
 
             User user = new User();
             user.Mail = email;
-            user.Username = name;
+            user.Name = name;
+            user.Lastname = lastname;
             user.Password = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
             user.Balans = 0;
-            user.Type = "User";
+            user.Status = 0;
+            user.Type = "Undefined";
 
-            db.User.Add(user);
+            db.Users.Add(user);
             db.SaveChanges();
 
             return Content("Created", "text/plain");
@@ -125,8 +123,8 @@ namespace WebRole1.Controllers
                 return RedirectToAction("Login", "Account");
             string name = Session["username"].ToString();
             string password1 = FormsAuthentication.HashPasswordForStoringInConfigFile(cpassword, "SHA1");
-            var users = from m in db.User select m;
-            users = users.Where(s => s.Username.Equals(name)).Where(s => s.Password.Equals(password1));
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Name.Equals(name)).Where(s => s.Password.Equals(password1));
             if (!users.Any()) {
                 return Content("Wrong password", "text/plain");
             }
@@ -159,12 +157,12 @@ namespace WebRole1.Controllers
                 case "username":
                     if (String.IsNullOrEmpty(newval))
                         return Content("Enter username", "text/plain");
-                    users = users.Where(s => s.Username.Equals(newval));
+                    users = users.Where(s => s.Name.Equals(newval));
                     if (users.Any())
                     {
                         return Content("Username is taken", "text/plain");
                     }
-                    user.Username = newval;
+                    user.Name = newval;
                     db.SaveChanges();
                     break;
             }

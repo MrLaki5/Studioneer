@@ -16,8 +16,13 @@
     </div>
 
     <div class="form-group">
-        @Html.Label("Username:")
+        @Html.Label("Name:")
         @Html.TextBox("name", null, new { @class = "form-control", @name = "name" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Lastname:")
+        @Html.TextBox("lastname", null, new { @class = "form-control", @name = "lastname" })
     </div>
 
     <div class="form-group">
@@ -45,6 +50,7 @@
         $("#Forma").validate({
             rules: {
                 name: "required",
+                lastname: "required",
                 email: {
                     required: true,
                     email: true
@@ -61,6 +67,7 @@
             },
             messages: {
                 name: "Please specify your name",
+                lastname: "Please specify your lastname",
                 email: {
                     required: "We need your email address to contact you",
                     email: "Your email address must be in the format of name@domain.com"
@@ -81,12 +88,13 @@
                 return;
             var Email = $('#email').val();
             var Name = $('#name').val();
+            var Lastname = $('#lastname').val();
             var Password = $('#password').val();
             var Cpassword = $('#cpassword').val();
 
             $.ajax({
                 type: "POST",
-                data: {email: Email, name: Name, password: Password, cpassword: Cpassword},
+                data: {email: Email, name: Name, lastname: Lastname, password: Password, cpassword: Cpassword},
                 url: '@Url.Action("Register","Account")',
                 success: function (result) {
                     $('#result').html(result);
