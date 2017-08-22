@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -38,6 +39,18 @@ namespace WebRole1.Controllers
                 return RedirectToAction("Logout", "Account");
             }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Configuration([Bind(Include = "IdP,AnswerNumber,SilverNumber,GoldNumber,PlatinumNumber,UnlockNumber,PremiumNumber")] Parameter parameter)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(parameter).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Configuration", "Admin");
         }
 
     }
