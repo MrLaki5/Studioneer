@@ -30,8 +30,14 @@ namespace WebRole1.Controllers
         [HttpGet]
         public ActionResult Info()
         {
-            if (Session["username"]==null)
+            if (Session["type"] == null)
+            {
                 return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() == "Administrator")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
             string email = Session["email"].ToString();
             var users = from m in db.Users select m;
             users = users.Where(s => s.Mail.Equals(email));
