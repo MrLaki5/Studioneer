@@ -72,7 +72,7 @@
                 success: function (result) {
                     $('#result').html(result);
                     if (new String("Success").valueOf() == new String(result).valueOf()) {
-                        window.location = "@Url.Action("EditInfo", "Account")";
+                        window.location = "@Url.Action("Info", "Account")";
                     }
                 }
             });

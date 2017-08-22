@@ -32,8 +32,14 @@ namespace WebRole1.Controllers
         {
             if (Session["username"]==null)
                 return RedirectToAction("Login", "Account");
-
-            return View();
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                return View(users.First());
+            }
+            return RedirectToAction("Login", "Account");
         }
 
         public ActionResult Logout() {
