@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebRole1.Models;
 
 namespace WebRole1.Controllers
 {
     public class AdminController : Controller
     {
+        private Model1 db = new Model1();
+
         [HttpGet]
         public ActionResult Configuration()
         {
@@ -17,7 +20,10 @@ namespace WebRole1.Controllers
             if (Session["type"].ToString() != "Administrator") {
                 return RedirectToAction("Logout", "Account");
             }
-            return View();
+
+            var users = from m in db.Parameters select m;
+            Parameter parameter = users.First();
+            return View(parameter);
         }
 
         [HttpGet]
