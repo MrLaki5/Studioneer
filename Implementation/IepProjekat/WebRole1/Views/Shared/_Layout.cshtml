@@ -40,11 +40,13 @@
     </div>
     <div class="container body-content">
 
-        @if (!(@HttpContext.Current.Session["username"] == null))
+        @if (@HttpContext.Current.Session["type"] != null)
         {
-            <h3 class="pull-right">@HttpContext.Current.Session["username"].ToString(), @HttpContext.Current.Session["token"].ToString() tokens.</h3>
+            if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
+            {
+                <h3 class="pull-right">@HttpContext.Current.Session["username"].ToString(), @HttpContext.Current.Session["token"].ToString() tokens.</h3>
+            }
         }
-
         @RenderBody()
         <hr />
         <footer>
