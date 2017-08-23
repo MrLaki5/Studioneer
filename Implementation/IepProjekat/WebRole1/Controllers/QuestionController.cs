@@ -13,5 +13,11 @@ namespace WebRole1.Controllers
         {
             return View();
         }
+
+        public ActionResult Upload()
+        {
+            return View();
+        }
     }
+
 }
