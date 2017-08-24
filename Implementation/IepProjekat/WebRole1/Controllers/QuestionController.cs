@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebRole1.Models;
 
 namespace WebRole1.Controllers
@@ -28,26 +29,35 @@ namespace WebRole1.Controllers
         [HttpPost]
         public ActionResult Create(HttpPostedFileBase file)
         {
-            if (Session["type"] == null)
+            /*if (Session["type"] == null)
             {
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() != "Professor")
             {
                 return RedirectToAction("Logout", "Account");
-            }
+            }*/
 
             if (file != null) {
+                string exten = Path.GetExtension(file.FileName).ToLower();
+                if ((exten != ".jpg") && (exten != ".jpeg") && (exten != ".png"))       //bad type of file check
+                    return RedirectToAction("Create", "Question");
+                if (file.ContentLength > 30000)                                          //size of file check in bytes
+                    return RedirectToAction("Create", "Question");
                 string pic = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine(Server.MapPath("~/Images"), pic);
-                while (!System.IO.File.Exists(path))
+                int count = 0;
+                string pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pic, "SHA1");
+                string path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom+pic);
+                while (System.IO.File.Exists(path))
                 {
-                    pic = "1" + pic;
-                    path = System.IO.Path.Combine(Server.MapPath("~/Images"), pic);
+                    pom = count+"" + pic;
+                    pom= FormsAuthentication.HashPasswordForStoringInConfigFile(pom, "SHA1");
+                    path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom+pic);
+                    count++;
                 }
+                pic = pom;
                 // file is uploaded
                 file.SaveAs(path);
-
             }
 
 
