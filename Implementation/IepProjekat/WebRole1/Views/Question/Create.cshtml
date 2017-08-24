@@ -41,7 +41,7 @@
 
     <div class="form-group">
         @Html.Label("Title:")
-        @Html.TextBox("ttitle", null, new { @class = "form-control", @name = "title",@maxlength="20" })
+        @Html.TextBox("ttitle", null, new { @class = "form-control", @name = "title",@maxlength="20", required = "required" })
     </div>
 
     <div class="form-group">
@@ -75,13 +75,17 @@
                         <span class="input-group-addon">@incrementorA.)</span>
                         <input id="msg" type="text" class="form-control" name="answer @i" placeholder="Additional Info" maxlength="100" required>
                         &nbsp
-                        <label class=".radio-inline"><input type="radio" name="radio202" value="@i">Select Correct Answer</label>
+                        <label class=".radio-inline"><input type="radio" checked name="radio202" value="@i">Select Correct Answer</label>
                     </div>
                 }
     <div class="form-group"></div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
-        <label class="checkbox-inline"><input type="checkbox" value="" name="locked">Lock'and Load</label>
+       
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
+        <label class="checkbox-inline"><input id="lock" type="checkbox" value="false" name="locked">Select to Lock File</label>
     </div>
  
  }
@@ -122,6 +126,16 @@
         });
 
         */
+        $('#lock').on('click', function lock() {
+            var locker = document.getElementById('lock');
+            if (locker.checked === true) {
+                locker.value = 'true';
+            } else {
+                locker.value = 'false';
+            }
+        })
+       
+
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
