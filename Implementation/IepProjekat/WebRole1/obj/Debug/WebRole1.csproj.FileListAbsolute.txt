@@ -479,7 +479,6 @@ D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\ko\System.Spatial.resource
 D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\ru\System.Spatial.resources.dll
 D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\zh-Hans\System.Spatial.resources.dll
 D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\zh-Hant\System.Spatial.resources.dll
-D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
 D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csproj.CoreCompileInputs.cache
 D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.dll
 D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.pdb
@@ -605,3 +604,4 @@ C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRo
 C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
 C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.dll
 C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.pdb
+D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
