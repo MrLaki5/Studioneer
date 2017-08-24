@@ -41,7 +41,7 @@
 
     <div class="form-group">
         @Html.Label("Title:")
-        @Html.TextBox("Title", null, new { @class = "form-control", @name = "title",@maxlength="20" })
+        @Html.TextBox("ttitle", null, new { @class = "form-control", @name = "title",@maxlength="20" })
     </div>
 
     <div class="form-group">
@@ -80,6 +80,7 @@
     <div class="form-group"></div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
+        <label class="checkbox-inline"><input type="checkbox" value="" name="locked">Lock'and Load</label>
     </div>
 
 }
