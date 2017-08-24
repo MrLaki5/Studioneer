@@ -1,14 +1,14 @@
-﻿@model IEnumerable<WebRole1.Models.Parameter>
-@{
+﻿@{
     ViewBag.Title = "Write Question";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>WriteQuestion</h2>
 
-<form id="Forma" method="post" enctype="multipart/form-data" runat="server">
+@using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
     @Html.AntiForgeryToken()
-    
+
 
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
@@ -25,15 +25,15 @@
     <div class="form-group">
        <input type="file" name="file" id="file" />
     </div>
-    
 
-    @for(var i = 1; i < 4; i++)
+
+    for (var i = 0; i < ViewBag.k; i++)
     { <div class="input-group">
             <span class="input-group-addon">Answer</span>
             <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info"> 
           &nbsp<label class="checkbox-inline"><input type="checkbox" value="">Select Correct Answer</label>
         </div>
     }
+    <div class="row"><input type="submit" value="Save"/></div>
 
-
-</form>
+}
