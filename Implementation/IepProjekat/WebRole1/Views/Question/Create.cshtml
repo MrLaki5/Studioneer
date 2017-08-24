@@ -79,11 +79,9 @@
                     </div>
                 }
     <div class="form-group"></div>
+    
     <div class="form-group">
-        <button type="button" class="btn btn-primary" id="butt1" href="#"><span class="glyphicon glyphicon-print"></span>&nbsp Back</button>
-       
-    </div>
-    <div class="form-group">
+        <a href="www.google.com"><button type="button" class="btn btn-warning" id="butt1"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button></a>
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
         <label class="checkbox-inline"><input id="lock" type="checkbox" value="false" name="locked">Select to Lock File</label>
     </div>
@@ -94,38 +92,6 @@
 
     $(document).ready(function () {
 
-      /*  $("#FormQ").validate({
-            rules: {
-                Title: {
-                    required: true,
-                    maxlength: 20
-                },
-                text: {
-                    required: true,
-                    maxlength: 200
-                },
-                msg: {
-                    required: true,
-                    maxlength: 100
-                }
-            },
-            messages: { 
-                title: {
-                    required: "We need your email address to contact you",
-                    maxlength: "Your email address must be in the format of name@domain.com"
-                },
-                text: {
-                    required: "We need your email address to contact you",
-                    maxlength: "Your email address must be in the format of name@domain.com"
-                },
-                msg: {
-                    required: "We need your email address to contact you",
-                    maxlength: "Your email address must be in the format of name@domain.com"
-                }
-            }
-        });
-
-        */
         $('#lock').on('click', function lock() {
             var locker = document.getElementById('lock');
             if (locker.checked === true) {

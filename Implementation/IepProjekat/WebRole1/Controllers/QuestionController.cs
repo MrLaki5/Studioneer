@@ -29,7 +29,7 @@ namespace WebRole1.Controllers
             return View(db.Questions.ToList());
         }
 
-        public ActionResult Edit()
+        public ActionResult Editor()
         {
             var users = from m in db.Questions select m;
             users = users.Where(s => s.IdP==5);

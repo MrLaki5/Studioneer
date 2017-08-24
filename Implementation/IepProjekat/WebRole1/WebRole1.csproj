@@ -241,6 +241,7 @@
     <Content Include="Views\Admin\Approvals.cshtml" />
     <Content Include="Views\Question\Create.cshtml" />
     <Content Include="Views\Question\Index.cshtml" />
+    <Content Include="Views\Question\Editor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
