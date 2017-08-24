@@ -29,6 +29,18 @@ namespace WebRole1.Controllers
             return View(db.Questions.ToList());
         }
 
+        public ActionResult Edit()
+        {
+            var users = from m in db.Questions select m;
+            users = users.Where(s => s.IdP==5);
+            if (users.Any())
+            {
+                Question question = users.First();
+                return View(question);
+            }
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
