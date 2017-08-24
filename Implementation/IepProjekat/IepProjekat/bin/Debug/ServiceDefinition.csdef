@@ -25,7 +25,7 @@
     </Endpoints>
     <Contents>
       <Content destination=".\">
-        <SourceDirectory path="C:\Users\mimar\Desktop\auctioneer\Implementation\IepProjekat\IepProjekat\rcf\Debug\WebRole1Content\" />
+        <SourceDirectory path="D:\auctioneer\Implementation\IepProjekat\IepProjekat\rcf\Debug\WebRole1Content\" />
       </Content>
     </Contents>
   </WebRole>
