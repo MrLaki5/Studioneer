@@ -32,6 +32,10 @@
                             <li>@Html.ActionLink("Configuration", "Configuration", "Admin")</li>
                             <li>@Html.ActionLink("Approvals", "Approvals", "Admin")</li>
                         }
+                        if (@HttpContext.Current.Session["type"].ToString() == "Professor")
+                        {
+                            <li>@Html.ActionLink("Questions", "Index", "Question")</li>
+                        }
                     }
                 </ul>
                 @Html.Partial("_LoginPartial");

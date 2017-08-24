@@ -15,8 +15,31 @@ namespace WebRole1.Controllers
         private Model1 db = new Model1();
 
         [HttpGet]
+        public ActionResult Index()
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+
+            return View(db.Questions.ToList());
+        }
+
+        [HttpGet]
         public ActionResult Create()
         {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
             var parameters = from m in db.Parameters select m;
             if (parameters.Any()) {
                 Parameter par = parameters.First();
@@ -121,6 +144,15 @@ namespace WebRole1.Controllers
                 }
             }
 
+            int locked = 0;
+            if (Request.Form["locked"] == null)
+            {
+                return RedirectToAction("Create", "Question");
+            }
+            string lck= Request.Form["locked"];
+            if (lck == "true")
+                locked = 1;
+
             string path = "";
             bool succ = false;
             if (file != null) {
@@ -155,8 +187,10 @@ namespace WebRole1.Controllers
             question.Text = text;
             question.IdU = idU;
             question.IsClone = 0;
-            //question.IsLocked =                   dodati is locked
+            question.IsLocked = locked;
             question.CreationTime = DateTime.UtcNow;
+            if (locked == 1)
+                question.LastLock = question.CreationTime;
             if (succ){
                 question.Image = path;
             }

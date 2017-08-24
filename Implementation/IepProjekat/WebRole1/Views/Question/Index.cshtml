@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebRole1.Models.Question>
+
+@{
+    ViewBag.Title = "Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Questions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastLock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsLocked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsClone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Image)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastLock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsLocked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsClone)
+        </td>
+    </tr>
+}
+
+</table>
