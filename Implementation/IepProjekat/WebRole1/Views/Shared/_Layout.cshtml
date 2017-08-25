@@ -48,7 +48,7 @@
         {
             if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
             {
-                <h3 class="pull-right">@HttpContext.Current.Session["username"].ToString(), @HttpContext.Current.Session["token"].ToString() tokens.</h3>
+                <h3 class="pull-right">@HttpContext.Current.Session["username"].ToString(), <span id="numtoken">@HttpContext.Current.Session["token"].ToString()</span> tokens.</h3>
             }
         }
         @RenderBody()

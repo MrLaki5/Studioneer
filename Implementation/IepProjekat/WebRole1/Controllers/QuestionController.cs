@@ -25,6 +25,12 @@ namespace WebRole1.Controllers
             {
                 return RedirectToAction("Logout", "Account");
             }
+            var parameters = from m in db.Parameters select m;
+            if (parameters.Any())
+            {
+                Parameter par = parameters.First();
+                ViewBag.unlock = par.UnlockNumber;
+            }
 
             string email = Session["email"].ToString();
             var users = from m in db.Users select m;
@@ -71,6 +77,8 @@ namespace WebRole1.Controllers
             {
                 User user = users.First();
                 Question question = questions.First();
+                if (question.IsLocked == 1)
+                    return RedirectToAction("Logout", "Account");
                 if (question.IdU==user.IdU)
                     return View(question);
             }
@@ -110,6 +118,51 @@ namespace WebRole1.Controllers
                 Question question = questions.First();
                 if (question.IdU == user.IdU)
                     return View(question);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult Index(int id) {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var questions = from m in db.Questions select m;
+            questions = questions.Where(s => s.IdP == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            var parameters = from m in db.Parameters select m;
+            Parameter par = null;
+            if (parameters.Any())
+            {
+                par = parameters.First();
+            }
+            else {
+                return RedirectToAction("Logout", "Account");
+            }
+
+            if (users.Any() && questions.Any())
+            {
+                User user = users.First();
+                Question question = questions.First();
+                if (question.IsLocked == 0)
+                    return RedirectToAction("Logout", "Account");
+                if (question.IdU == user.IdU) {
+                    if (user.Balans >= par.UnlockNumber) {
+                        user.Balans -= par.UnlockNumber;
+                        question.IsLocked = 0;
+                        db.SaveChanges();   
+                        Session["token"] = user.Balans.ToString();
+                        return Content(user.Balans.ToString(), "text/plain");
+                    }
+                    return Content("error", "text/plain");
+                }
             }
             return RedirectToAction("Logout", "Account");
         }
@@ -160,6 +213,8 @@ namespace WebRole1.Controllers
             {
                 user = users.First();
                 question1 = questions.First();
+                if (question1.IsLocked==1)
+                    return RedirectToAction("Logout", "Account");
                 if (question1.IdU != user.IdU)
                     return RedirectToAction("Logout", "Account");
             }

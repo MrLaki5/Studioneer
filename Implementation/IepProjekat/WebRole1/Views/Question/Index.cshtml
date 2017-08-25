@@ -7,12 +7,38 @@
 
 <h2>Questions</h2>
 
+
+<script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function linkClick(number) {
+        $.ajax({
+            type: "POST",
+            data: { id: number },
+            url: '@Url.Action("Index", "Question")',
+                success: function (result) {
+                    if (result !== "Error") {
+                        var elem1 = document.getElementById("numtoken");
+                        elem1.innerHTML = result;
+
+                        var actname = '<a href="@Url.Action("Editor", "Question")/'+number+'">Edit</a>';
+
+                        var name1 = "span " + number;
+                        elem1 = document.getElementById(name1);
+                        elem1.innerHTML = actname;
+
+                    }
+                }
+            });
+    }
+</script>
+
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
-        
+
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
@@ -21,9 +47,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LastLock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsLocked)
         </th>
         <th></th>
     </tr>
@@ -39,14 +62,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.LastLock)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsLocked)
-        </td>
-        <td>
+        <td><div>
             @Html.ActionLink("Details", "Details", new { id = item.IdP }) |
-            @Html.ActionLink("Edit", "Editor", new { id = item.IdP })
+            @if (@item.IsLocked == 0)
+            {
+                @Html.ActionLink("Edit", "Editor", new { id = item.IdP })
+            }
+            else
+            {
+                <span style="cursor:pointer" id="span @item.IdP"><a onclick="linkClick(@item.IdP)">Unlock (@ViewBag.unlock tokens)</a></span>
+            }</div>
         </td>
     </tr>
-}
+ }
 
 </table>
