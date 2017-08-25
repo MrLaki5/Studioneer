@@ -43,8 +43,6 @@
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
     <div class="form-group">
-        @Html.Label("Title:")
-        @Html.TextBox("model => model.Title", null, new { @class = "form-control", @name = "title", @maxlength = "20", required = "required" ,@placeholder=@Html.DisplayFor(model => model.Title) })
         <label for="title">Title:</label>
         <input class="form-control" name="title" maxlength="20" required value=@Html.DisplayFor(model => model.Title) />
     </div>
