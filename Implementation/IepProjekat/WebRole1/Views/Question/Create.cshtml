@@ -32,7 +32,7 @@
 
 <h2>WriteQuestion</h2>
 
-@using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id ="FormQ", role="form" }))
+@using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormQ", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -41,7 +41,7 @@
 
     <div class="form-group">
         @Html.Label("Title:")
-        @Html.TextBox("ttitle", null, new { @class = "form-control", @name = "title",@maxlength="20", required = "required" })
+        @Html.TextBox("ttitle", null, new { @class = "form-control", @name = "title", @maxlength = "20", required = "required" })
     </div>
 
     <div class="form-group">
@@ -64,29 +64,32 @@
             </div>
 
 
-                var incrementor = 64;
-                
+    var incrementor = 64;
 
-                for (var i = 0; i < ViewBag.k; i++)
-                {
-                    incrementor++;
-                   var incrementorA = (char)incrementor;
+
+    for (var i = 0; i < ViewBag.k; i++)
+    {
+        incrementor++;
+        var incrementorA = (char)incrementor;
                     <div class="input-group">
                         <span class="input-group-addon">@incrementorA.)</span>
                         <input id="msg" type="text" class="form-control" name="answer @i" placeholder="Additional Info" maxlength="100" required>
                         &nbsp
                         <label class=".radio-inline"><input type="radio" checked name="radio202" value="@i">Select Correct Answer</label>
                     </div>
-                }
+    }
     <div class="form-group"></div>
-    
+
     <div class="form-group">
-        <a href="www.google.com"><button type="button" class="btn btn-warning" id="butt1"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button></a>
+        <button type="button" class="btn btn-warning" id="butt1" onclick="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
         <label class="checkbox-inline"><input id="lock" type="checkbox" value="false" name="locked">Select to Lock File</label>
     </div>
- 
- }
+    if (ViewBag.err!=null) {
+            <label>@ViewBag.err</label>
+    }
+
+}
 <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
 <script type="text/javascript">
 
