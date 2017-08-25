@@ -26,7 +26,18 @@ namespace WebRole1.Controllers
                 return RedirectToAction("Logout", "Account");
             }
 
-            return View(db.Questions.ToList());
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                int id = user.IdU;
+                var questions = from m in db.Questions select m;
+                questions = questions.Where(s => s.IdU==id);
+                return View(questions);
+            }
+            return RedirectToAction("Logout", "Account");
         }
 
         [HttpGet]
@@ -61,6 +72,43 @@ namespace WebRole1.Controllers
                 User user = users.First();
                 Question question = questions.First();
                 if (question.IdU==user.IdU)
+                    return View(question);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult Details(int? id)
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var questions = from m in db.Questions select m;
+            questions = questions.Where(s => s.IdP == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            var parameters = from m in db.Parameters select m;
+            if (parameters.Any())
+            {
+                Parameter par = parameters.First();
+                ViewBag.k = par.AnswerNumber;
+            }
+
+            if (users.Any() && questions.Any())
+            {
+                User user = users.First();
+                Question question = questions.First();
+                if (question.IdU == user.IdU)
                     return View(question);
             }
             return RedirectToAction("Logout", "Account");
@@ -106,12 +154,6 @@ namespace WebRole1.Controllers
             string email = Session["email"].ToString();
             var users = from m in db.Users select m;
             users = users.Where(s => s.Mail.Equals(email));
-            var parameters = from m in db.Parameters select m;
-            if (parameters.Any())
-            {
-                Parameter par = parameters.First();
-                ViewBag.k = par.AnswerNumber;
-            }
             User user = null;
             Question question1 = null;
             if (users.Any() && questions.Any())
@@ -168,20 +210,8 @@ namespace WebRole1.Controllers
             string correctAnswer = Request.Form["radio202"];
 
 
-
-            int idU;
-            if (user!=null)
-            {
-                idU = user.IdU;
-            }
-            else
-            {
-                return RedirectToAction("Logout", "Home");
-            }
-
-
-            Answer[] ans = new Answer[ViewBag.k];
             int AnsNum = question1.Answers.Count;
+            Answer[] ans = new Answer[AnsNum];
             for (int i = 1; i <= AnsNum; i++)
             {
                 ans[i-1] = new Answer();
@@ -286,7 +316,7 @@ namespace WebRole1.Controllers
             }
             db.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", "Question");
         }
 
         [HttpPost]
@@ -446,8 +476,8 @@ namespace WebRole1.Controllers
                 db.Answers.Add(ans[i]);
             }
             db.SaveChanges();
-        
-            return View();
+
+            return RedirectToAction("Index", "Question");
         }
     }
 
