@@ -29,22 +29,41 @@ namespace WebRole1.Controllers
             return View(db.Questions.ToList());
         }
 
-        public ActionResult Editor()
+        [HttpGet]
+        public ActionResult Editor(int? id)
         {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var questions = from m in db.Questions select m;
+            questions = questions.Where(s => s.IdP == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
             var parameters = from m in db.Parameters select m;
             if (parameters.Any())
             {
                 Parameter par = parameters.First();
                 ViewBag.k = par.AnswerNumber;
             }
-            var users = from m in db.Questions select m;
-            users = users.Where(s => s.IdP==1);
-            if (users.Any())
+            
+            if (users.Any() && questions.Any())
             {
-                Question question = users.First();
-                return View(question);
+                User user = users.First();
+                Question question = questions.First();
+                if (question.IdU==user.IdU)
+                    return View(question);
             }
-            return View();
+            return RedirectToAction("Logout", "Account");
         }
 
         [HttpGet]
@@ -68,6 +87,209 @@ namespace WebRole1.Controllers
         }
 
         [HttpPost]
+        public ActionResult Editor(int? id, HttpPostedFileBase file)
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var questions = from m in db.Questions select m;
+            questions = questions.Where(s => s.IdP == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            var parameters = from m in db.Parameters select m;
+            if (parameters.Any())
+            {
+                Parameter par = parameters.First();
+                ViewBag.k = par.AnswerNumber;
+            }
+            User user = null;
+            Question question1 = null;
+            if (users.Any() && questions.Any())
+            {
+                user = users.First();
+                question1 = questions.First();
+                if (question1.IdU != user.IdU)
+                    return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+
+
+
+
+            if (Request.Form["ttitle"] == null)
+            {
+                return RedirectToAction("Editor", "Question");
+            }
+            string title = Request.Form["ttitle"];
+            if (title.Length > 20)
+            {
+                ViewBag.err = "Title length max 20 characters";
+                return View();
+            }
+            if (title == "")
+            {
+                ViewBag.err = "Title required";
+                return View();
+            }
+            if (Request.Form["text"] == null)
+            {
+                return RedirectToAction("Editor", "Question");
+            }
+            string text = Request.Form["text"];
+            if (text.Length > 200)
+            {
+                ViewBag.err = "Text length max 200 characters";
+                return View();
+            }
+            if (text == "")
+            {
+                ViewBag.err = "Text required";
+                return View();
+            }
+
+
+            if (Request.Form["radio202"] == null)
+            {
+                return RedirectToAction("Editor", "Question");
+            }
+            string correctAnswer = Request.Form["radio202"];
+
+
+
+            int idU;
+            if (user!=null)
+            {
+                idU = user.IdU;
+            }
+            else
+            {
+                return RedirectToAction("Logout", "Home");
+            }
+
+
+            Answer[] ans = new Answer[ViewBag.k];
+            int AnsNum = question1.Answers.Count;
+            for (int i = 1; i <= AnsNum; i++)
+            {
+                ans[i-1] = new Answer();
+                if (Request.Form["answer " + i] == null)
+                {
+                    return RedirectToAction("Editor", "Question");
+                }
+                if (Request.Form["answer " + i] == "")
+                {
+                    ViewBag.err = "All answers are required";
+                    return View();
+                }
+                string temp = Request.Form["answer " + i];
+                ans[i-1].Number = i;
+                ans[i-1].Text = temp;
+                ans[i-1].Tag = (char)(i + 64) + "";
+                if (correctAnswer == "" + i)
+                {
+                    ans[i-1].IsCorrect = 1;
+                }
+                else
+                {
+                    ans[i-1].IsCorrect = 0;
+                }
+            }
+
+            int locked = 0;
+            if (Request.Form["locked"] != null)
+            {
+                string lck = Request.Form["locked"];
+                if (lck == "one")
+                    locked = 1;
+            }
+            string path = "";
+            string imgname = "";
+            bool succ = false;
+            if (file != null)
+            {
+                string exten = Path.GetExtension(file.FileName).ToLower();
+                if ((exten != ".jpg") && (exten != ".jpeg") && (exten != ".png"))
+                {       //bad type of file check
+                    ViewBag.err = "Image is wrong format";
+                    return View();
+                }
+                if (file.ContentLength > 30000)
+                {                                          //size of file check in bytes
+                    ViewBag.err = "Image is too big";
+                    return View();
+                }
+                string pic = System.IO.Path.GetFileName(file.FileName);
+                int count = 0;
+                string pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pic, "SHA1");
+                path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom + pic);
+                imgname = pom + pic;
+                while (System.IO.File.Exists(path))
+                {
+                    pom = count + "" + pic;
+                    pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pom, "SHA1");
+                    path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom + pic);
+                    imgname = pom + pic;
+                    count++;
+                }
+                pic = pom;
+                file.SaveAs(path);                                        // file is uploaded
+                succ = true;
+                if (question1.Image != null)
+                {
+                    var filePath = Server.MapPath("~/Images/"+question1.ImageName);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+            }
+
+
+            question1.Title = title;
+            question1.Text = text;
+            question1.IsLocked = locked;
+            if (locked == 1)
+                question1.LastLock = DateTime.UtcNow;
+            if (succ)
+            {
+                question1.Image = path;
+                question1.ImageName = imgname;
+            }
+
+
+
+            db.SaveChanges();
+            foreach (var item in question1.Answers)
+            {
+                for (int cnt = 0; cnt < AnsNum; cnt++)
+                {
+                    if (ans[cnt].Number == item.Number) {
+                        item.IsCorrect = ans[cnt].IsCorrect;
+                        item.Text = ans[cnt].Text;
+                        cnt = AnsNum;
+                    }
+                }
+                
+            }
+            db.SaveChanges();
+
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Create(HttpPostedFileBase file)
         {
             if (Session["type"] == null)
@@ -86,7 +308,7 @@ namespace WebRole1.Controllers
             }
 
             if (Request.Form["ttitle"] == null){
-                return RedirectToAction("Create", "Question");
+                return View();
             }
             string title = Request.Form["ttitle"];
             if (title.Length > 20){
@@ -98,7 +320,7 @@ namespace WebRole1.Controllers
                 return View();
             }
             if (Request.Form["text"] == null){
-                return RedirectToAction("Create", "Question");
+                return View();
             }
             string text = Request.Form["text"];
             if (text.Length > 200)
@@ -141,12 +363,12 @@ namespace WebRole1.Controllers
                 ans[i] = new Answer();
                 if (Request.Form["answer " + i] == null)
                 {
-                    return View("Create", "Question");
+                    return View();
                 }
                 if (Request.Form["answer " + i] == "")
                 {
                     ViewBag.err = "All answers are required";
-                    return View("Create", "Question");
+                    return View();
                 }
                 string temp = Request.Form["answer " + i];
                 ans[i].Number = i + 1;
@@ -180,7 +402,7 @@ namespace WebRole1.Controllers
                 }
                 if (file.ContentLength > 30000){                                          //size of file check in bytes
                     ViewBag.err = "Image is too big";
-                    return View("Create", "Question");
+                    return View();
                 }
                 string pic = System.IO.Path.GetFileName(file.FileName);
                 int count = 0;

@@ -35,7 +35,7 @@
 
 
 
-@using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormQ", role = "form" }))
+@using (Html.BeginForm("Editor", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormQ", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -44,7 +44,7 @@
 
     <div class="form-group">
         <label for="title">Title:</label>
-        <input class="form-control" name="title" maxlength="20" required value=@Html.DisplayFor(model => model.Title) />
+        <input class="form-control" name="ttitle" maxlength="20" required value=@Html.DisplayFor(model => model.Title) />
     </div>
 
     <div class="form-group">
@@ -62,7 +62,7 @@
             </span>
             <input type="text" class="form-control" readonly>
         </div>
-        @if (@Model.Image!=null){
+        @if (@Model.ImageName!=null){
             <img id='img-upload' src="/Images/@Model.ImageName"/>
         }
         else
@@ -72,18 +72,22 @@
     </div>
 
 
-    var incrementor = 64;
 
- 
-    for (var i = 0; i < ViewBag.k; i++)
+    foreach (var item in Model.Answers)
     {
-        incrementor++;
-        var incrementorA = (char)incrementor;
+
         <div class="input-group">
-            <span class="input-group-addon">@incrementorA.)</span>
-            <input id="msg" type="text" class="form-control" name="answer @i" placeholder="Additional Info" maxlength="100" required>
+            <span class="input-group-addon">@item.Tag)</span>
+            <input id="msg" type="text" class="form-control" name="answer @item.Number" maxlength="100" required value="@item.Text" />
             &nbsp
-            <label class=".radio-inline"><input type="radio" checked name="radio202" value="@i">Select Correct Answer</label>
+            @if (@item.IsCorrect == 1)
+            {
+                <label class=".radio-inline"><input type="radio" checked name="radio202" value="@item.Number">Select Correct Answer</label>
+            }
+            else
+            {
+                <label class=".radio-inline"><input type="radio" name="radio202" value="@item.Number">Select Correct Answer</label>
+            }
         </div>
     }
     <div class="form-group"></div>
@@ -91,7 +95,7 @@
     <div class="form-group">
         <button type="button" class="btn btn-warning" id="butt1" onclick="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
-        <label class="checkbox-inline"><input id="lock" type="checkbox" value="false" name="locked">Select to Lock File</label>
+        <label class="checkbox-inline"><input id="lock" type="checkbox" value="zero" name="locked">Select to Lock File</label>
     </div>
     if (ViewBag.err != null)
     {
@@ -139,9 +143,9 @@
         $('#lock').on('click', function lock() {
             var locker = document.getElementById('lock');
             if (locker.checked === true) {
-                locker.value = 'true';
+                locker.value = 'one';
             } else {
-                locker.value = 'false';
+                locker.value = 'zero';
             }
         })
 
