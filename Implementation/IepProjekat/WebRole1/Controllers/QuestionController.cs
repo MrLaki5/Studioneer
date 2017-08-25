@@ -31,6 +31,12 @@ namespace WebRole1.Controllers
 
         public ActionResult Editor()
         {
+            var parameters = from m in db.Parameters select m;
+            if (parameters.Any())
+            {
+                Parameter par = parameters.First();
+                ViewBag.k = par.AnswerNumber;
+            }
             var users = from m in db.Questions select m;
             users = users.Where(s => s.IdP==5);
             if (users.Any())
