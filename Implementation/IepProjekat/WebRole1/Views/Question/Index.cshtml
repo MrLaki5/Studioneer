@@ -16,7 +16,7 @@
             data: { id: number },
             url: '@Url.Action("Index", "Question")',
                 success: function (result) {
-                    if (result !== "Error") {
+                    if (result !== "error") {
                         var elem1 = document.getElementById("numtoken");
                         elem1.innerHTML = result;
 
