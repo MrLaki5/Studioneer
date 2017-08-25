@@ -38,7 +38,7 @@ namespace WebRole1.Controllers
                 ViewBag.k = par.AnswerNumber;
             }
             var users = from m in db.Questions select m;
-            users = users.Where(s => s.IdP==5);
+            users = users.Where(s => s.IdP==1);
             if (users.Any())
             {
                 Question question = users.First();
@@ -163,15 +163,14 @@ namespace WebRole1.Controllers
             }
 
             int locked = 0;
-            if (Request.Form["locked"] == null)
+            if (Request.Form["locked"] != null)
             {
-                return RedirectToAction("Create", "Question");
+                string lck = Request.Form["locked"];
+                if (lck == "one")
+                    locked = 1;
             }
-            string lck= Request.Form["locked"];
-            if (lck == "true")
-                locked = 1;
-
             string path = "";
+            string imgname = "";
             bool succ = false;
             if (file != null) {
                 string exten = Path.GetExtension(file.FileName).ToLower();
@@ -187,11 +186,13 @@ namespace WebRole1.Controllers
                 int count = 0;
                 string pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pic, "SHA1");
                 path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom+pic);
+                imgname = pom + pic;
                 while (System.IO.File.Exists(path))
                 {
                     pom = count+"" + pic;
                     pom= FormsAuthentication.HashPasswordForStoringInConfigFile(pom, "SHA1");
                     path = System.IO.Path.Combine(Server.MapPath("~/Images"), pom+pic);
+                    imgname = pom + pic;
                     count++;
                 }
                 pic = pom;
@@ -211,6 +212,7 @@ namespace WebRole1.Controllers
                 question.LastLock = question.CreationTime;
             if (succ){
                 question.Image = path;
+                question.ImageName = imgname;
             }
 
             

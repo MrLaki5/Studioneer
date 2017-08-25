@@ -72,6 +72,10 @@ namespace WebRole1.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Question>()
+                .Property(e => e.ImageName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Question>()
                 .HasMany(e => e.Answers)
                 .WithRequired(e => e.Question)
                 .WillCascadeOnDelete(false);

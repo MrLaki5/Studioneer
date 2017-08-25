@@ -83,7 +83,7 @@
     <div class="form-group">
         <button type="button" class="btn btn-warning" id="butt1" onclick="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
-        <label class="checkbox-inline"><input id="lock" type="checkbox" value="false" name="locked">Select to Lock File</label>
+        <label class="checkbox-inline"><input id="lock" type="checkbox" value="zero" name="locked">Select to Lock File</label>
     </div>
     if (ViewBag.err!=null) {
             <label>@ViewBag.err</label>
@@ -98,9 +98,9 @@
         $('#lock').on('click', function lock() {
             var locker = document.getElementById('lock');
             if (locker.checked === true) {
-                locker.value = 'true';
+                locker.value = 'one';
             } else {
-                locker.value = 'false';
+                locker.value = 'zero';
             }
         })
        

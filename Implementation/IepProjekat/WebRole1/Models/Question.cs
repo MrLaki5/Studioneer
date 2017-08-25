@@ -29,6 +29,9 @@ namespace WebRole1.Models
         [StringLength(200)]
         public string Image { get; set; }
 
+        [StringLength(100)]
+        public string ImageName { get; set; }
+
         public DateTime? CreationTime { get; set; }
 
         public DateTime? LastLock { get; set; }

@@ -62,7 +62,13 @@
             </span>
             <input type="text" class="form-control" readonly>
         </div>
-        <img id='img-upload' />
+        @if (@Model.Image!=null){
+            <img id='img-upload' src="/Images/@Model.ImageName"/>
+        }
+        else
+        {
+            <img id='img-upload' />
+        }
     </div>
 
 
