@@ -35,6 +35,7 @@
                         if (@HttpContext.Current.Session["type"].ToString() == "Professor")
                         {
                             <li>@Html.ActionLink("Questions", "Index", "Question")</li>
+                            <li>@Html.ActionLink("Channels", "Index", "Channel")</li>
                         }
                     }
                 </ul>

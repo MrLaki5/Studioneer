@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WebRole1.Models.Channel>
+
+@{
+    ViewBag.Title = "Channels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Channels</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Open time (UTC)
+        </th>
+        <th>
+            Close time (UTC)
+        </th>
+        <th>
+            Subscriptions
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpenTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CloseTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subscriptions.Count)
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+}
+
+</table>

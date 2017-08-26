@@ -176,6 +176,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ChannelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -243,6 +244,8 @@
     <Content Include="Views\Question\Index.cshtml" />
     <Content Include="Views\Question\Editor.cshtml" />
     <Content Include="Views\Question\Details.cshtml" />
+    <Content Include="Views\Channel\Create.cshtml" />
+    <Content Include="Views\Channel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
