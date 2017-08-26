@@ -38,15 +38,17 @@
 </p>
 <table class="table">
     <tr>
-
+        <th>
+            Id
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreationTime)
+            Creation time (UTC)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastLock)
+            Last lock time (UTC)
         </th>
         <th></th>
     </tr>
@@ -54,15 +56,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.IdP)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CreationTime)
+            @Html.ValueFor(modelItem => item.CreationTime, "{0:dd/MMM/yyyy HH:mm}")
+            <!--@DateTime.Parse(Html.DisplayFor(modelItem => item.CreationTime).ToString()).ToLocalTime().ToString() local time if needed (lcoal for server ofc)--> 
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastLock)
+            @Html.ValueFor(modelItem => item.LastLock, "{0:dd/MMM/yyyy HH:mm}")
         </td>
-        <td><div>
+        <td>
             @Html.ActionLink("Details", "Details", new { id = item.IdP }) |
             @if (@item.IsLocked == 0)
             {
@@ -71,7 +77,7 @@
             else
             {
                 <span style="cursor:pointer" id="span @item.IdP"><a onclick="linkClick(@item.IdP)">Unlock (@ViewBag.unlock tokens)</a></span>
-            }</div>
+            }
         </td>
     </tr>
  }

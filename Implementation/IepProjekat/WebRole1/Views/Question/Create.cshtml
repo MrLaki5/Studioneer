@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Write Question";
+    ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,7 @@
     }
 </style>
 
-<h2>WriteQuestion</h2>
+<h2>Question create</h2>
 
 @using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormQ", role = "form" }))
 {
@@ -81,7 +81,7 @@
     <div class="form-group"></div>
 
     <div class="form-group">
-        <button type="button" class="btn btn-warning" id="butt1" onclick="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
+        <button type="button" class="btn btn-primary" id="beck"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
         <label class="checkbox-inline"><input id="lock" type="checkbox" value="zero" name="locked">Select to Lock File</label>
     </div>
@@ -95,6 +95,10 @@
 
     $(document).ready(function () {
 
+        $('#beck').on('click', function clckF() {
+            window.location = "@Url.Action("Index", "Question")";
+        })
+
         $('#lock').on('click', function lock() {
             var locker = document.getElementById('lock');
             if (locker.checked === true) {
@@ -103,7 +107,7 @@
                 locker.value = 'zero';
             }
         })
-       
+
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),

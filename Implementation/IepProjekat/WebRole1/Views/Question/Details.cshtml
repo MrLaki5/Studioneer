@@ -1,156 +1,117 @@
 ﻿@model WebRole1.Models.Question
 @{
-    ViewBag.Title = "Editor";
+    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit question</h2>
+<h2>Question details</h2>
 
 <style>
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
-
-        .btn-file input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            min-width: 100%;
-            min-height: 100%;
-            font-size: 100px;
-            text-align: right;
-            filter: alpha(opacity=0);
-            opacity: 0;
-            outline: none;
-            background: white;
-            cursor: inherit;
-            display: block;
-        }
-
     #img-upload {
         width: 200px;
+        margin-bottom: 10px;
     }
 </style>
 
 
 
-@using (Html.BeginForm("Editor", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormQ", role = "form" }))
-{
+
     @Html.AntiForgeryToken()
 
 
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
+    <span style="display:none" id="name">@Model.IdP</span>
+
     <div class="form-group">
-        <label for="title">Title:</label>
-        <input class="form-control" name="ttitle" maxlength="20" required value=@Html.DisplayFor(model => model.Title) />
+        <label for="title">Title:</label><br/>
+        @Html.DisplayFor(model => model.Title)
     </div>
 
     <div class="form-group">
-        <label for="text">Question Text:</label>
-        <textarea class="form-control" rows="5" id="text" maxlength="200" name="text" required>@Html.DisplayFor(model => model.Text)</textarea>
-    </div>
-
-    <div class="form-group">
-        <label>Upload Image</label>
-        <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    Browse… <input type="file" id="imgInp" name="file">
-                </span>
-            </span>
-            <input type="text" class="form-control" readonly>
-        </div>
-        @if (@Model.ImageName != null)
-        {
-            <img id='img-upload' src="/Images/@Model.ImageName" />
-        }
-        else
-        {
-            <img id='img-upload' />
-        }
+        <label for="text">Text:</label><br/>
+        @Html.DisplayFor(model => model.Text)
     </div>
 
 
-
-    foreach (var item in Model.Answers)
+    @if (@Model.ImageName != null)
     {
+        <label>Image:</label><br/>
+        <img id='img-upload' src="/Images/@Model.ImageName" />
+        <br />
+    }
 
+    <label>Answers:</label><br/>
+    @foreach (var item in Model.Answers)
+    {
         <div class="input-group">
-            <span class="input-group-addon">@item.Tag)</span>
-            <input id="msg" type="text" class="form-control" name="answer @item.Number" maxlength="100" required value="@item.Text" />
-            &nbsp
             @if (@item.IsCorrect == 1)
             {
-                <label class=".radio-inline"><input type="radio" checked name="radio202" value="@item.Number">Select Correct Answer</label>
+                <label class="text-success">@item.Tag)&nbsp</label>
+                <span class="text-success">@Html.DisplayFor(model => item.Text)</span>
             }
             else
             {
-                <label class=".radio-inline"><input type="radio" name="radio202" value="@item.Number">Select Correct Answer</label>
+                <label class="text-danger">@item.Tag)&nbsp</label>
+                <span class="text-danger">@Html.DisplayFor(model => item.Text)</span>
             }
         </div>
     }
     <div class="form-group"></div>
 
     <div class="form-group">
-        <button type="button" class="btn btn-warning" id="butt1" onclick="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
-        <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
-        <label class="checkbox-inline"><input id="lock" type="checkbox" value="zero" name="locked">Select to Lock File</label>
+        <button type="button" class="btn btn-primary" id="beck"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
+        @if (Model.IsLocked == 1)
+        {
+            <span id="buttCh"><button type="button" class="btn btn-primary" id="unlock"><span class="glyphicon glyphicon-lock"></span>&nbsp Unlock (@ViewBag.unlock)</button></span>
+        }
+        else
+        {
+            <button type="button" class="btn btn-primary" id="edit"><span class="glyphicon glyphicon-edit"></span>&nbsp Edit</button>
+        }
     </div>
-    if (ViewBag.err != null)
-    {
-        <label>@ViewBag.err</label>
-    }
 
-}
+
 <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
 
-        $('#lock').on('click', function lock() {
-            var locker = document.getElementById('lock');
-            if (locker.checked === true) {
-                locker.value = 'one';
-            } else {
-                locker.value = 'zero';
-            }
-        })
-
-
-        $(document).on('change', '.btn-file :file', function () {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
+        $('#beck').on('click', function clckF() {
+            window.location = "@Url.Action("Index", "Question")";
         });
 
-        $('.btn-file :file').on('fileselect', function (event, label) {
-
-            var input = $(this).parents('.input-group').find(':text'),
-                log = label;
-
-            if (input.length) {
-                input.val(log);
-            } else {
-                if (log) alert(log);
-            }
-
+        $('#edit').on('click', function clckF1() {
+            var number = $('#name').text();
+            window.location = '@Url.Action("Editor", "Question")/'+number;
         });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $('#img-upload').attr('src', e.target.result);
+        $('#unlock').on('click', function clickU() {
+            var number = $('#name').text();
+            $.ajax({
+            type: "POST",
+            data: { id: number },
+            url: '@Url.Action("Index", "Question")',
+                success: function (result) {
+                    if (result !== "error") {
+                        var elem1 = document.getElementById("numtoken");
+                        elem1.innerHTML = result;
+
+                        var actname ='<button type="button" class="btn btn-primary" id="edit1"><span class="glyphicon glyphicon-edit"></span>&nbsp Edit</button>';
+
+                        elem1 = document.getElementById("buttCh");
+                        elem1.innerHTML = actname;
+
+                        $('#edit1').on('click', function clckF1() {
+                               var number = $('#name').text();
+                                window.location = '@Url.Action("Editor", "Question")/'+number;
+                        });
+
+                    }
                 }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#imgInp").change(function () {
-            readURL(this);
+            });
         });
+
+
     });
 </script>

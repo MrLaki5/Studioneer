@@ -109,7 +109,7 @@ namespace WebRole1.Controllers
             if (parameters.Any())
             {
                 Parameter par = parameters.First();
-                ViewBag.k = par.AnswerNumber;
+                ViewBag.unlock = par.UnlockNumber;
             }
 
             if (users.Any() && questions.Any())
