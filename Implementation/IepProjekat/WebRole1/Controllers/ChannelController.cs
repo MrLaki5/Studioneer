@@ -33,6 +33,90 @@ namespace WebRole1.Controllers
             return RedirectToAction("Logout", "Account");
         }
 
+        [HttpPost]
+        public ActionResult Index(int id, string action)
+        {
+            if (Session["type"] == null)
+                return Content("error2", "text/plain");
+            if (Session["type"].ToString() != "Professor")
+                return Content("error2", "text/plain");
+            var channels = from m in db.Channels select m;
+            channels = channels.Where(s => s.IdC == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any() && channels.Any())
+            {
+                User user = users.First();
+                Channel channel = channels.First();
+                
+                if (channel.IdU == user.IdU)
+                {
+                    if (string.Compare(action, "Open") == 0)
+                    {
+                        if (channel.OpenTime != null)
+                            return Content("error2", "text/plain");
+                        channel.OpenTime = DateTime.UtcNow;
+                        db.SaveChanges();
+                        string ret = String.Format("{0:dd/MMM/yyyy HH:mm}", channel.OpenTime);
+                        return Content(ret, "text/plain");
+                    }
+                    if (string.Compare(action, "Close") == 0)
+                    {
+                        if (channel.CloseTime != null)
+                            return Content("error2", "text/plain");
+                        channel.CloseTime = DateTime.UtcNow;
+                        db.SaveChanges();
+                        string ret = String.Format("{0:dd/MMM/yyyy HH:mm}", channel.OpenTime);
+                        return Content(ret, "text/plain");
+                    }
+                }
+            }
+            return Content("error2", "text/plain");
+        }
+
+        [HttpGet]
+        public ActionResult timeSet(int? id)
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var channels = from m in db.Channels select m;
+            channels = channels.Where(s => s.IdC == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+
+            if (users.Any() && channels.Any())
+            {
+                User user = users.First();
+                Channel channel = channels.First();
+                if (channel.OpenTime == null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.CloseTime!=null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.IdU == user.IdU)
+                    return View(channel);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult timeSet(string closeTime, string closeTime1) {
+            string date = closeTime + " " + closeTime1;
+            DateTime dt = DateTime.Parse(date);
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Create()
         {

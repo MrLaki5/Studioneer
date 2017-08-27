@@ -246,6 +246,7 @@
     <Content Include="Views\Question\Details.cshtml" />
     <Content Include="Views\Channel\Create.cshtml" />
     <Content Include="Views\Channel\Index.cshtml" />
+    <Content Include="Views\Channel\timeSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
