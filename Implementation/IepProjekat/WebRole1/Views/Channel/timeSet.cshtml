@@ -9,9 +9,9 @@
 @using (Html.BeginForm("timeSet", "Channel", FormMethod.Post, new { id = "FormQ", role = "form" }))
 {
     <div class="form-group">
-        @Html.Label("Set channel closing time:")
-        <input type="date" name="closeTime" required = "required" class = "form-control"/>
-        <input type="time" name="closeTime1" required = "required" class = "form-control"/>
+        @Html.Label("Set channel closing time (UTC):")
+       <input type="date" name="closeTime" required = "required" class = "form-control"/>
+       <input type="time" name="closeTime1" required = "required" class = "form-control"/>
     </div>
 
     <div class="form-group"></div>
@@ -21,7 +21,7 @@
         <button type="submit" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
     </div>
     <div class="form-group">
-        @Html.Label(" ", new { id = "result" })
+        <label>@ViewBag.error</label>
     </div>
 
 }

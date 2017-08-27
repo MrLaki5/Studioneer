@@ -111,10 +111,45 @@ namespace WebRole1.Controllers
         }
 
         [HttpPost]
-        public ActionResult timeSet(string closeTime, string closeTime1) {
+        public ActionResult timeSet(string closeTime, string closeTime1, int id) {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var channels = from m in db.Channels select m;
+            channels = channels.Where(s => s.IdC == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            Channel channel = null;
+            if (users.Any() && channels.Any())
+            {
+                User user = users.First();
+                channel = channels.First();
+                if (channel.OpenTime == null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.CloseTime != null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.IdU != user.IdU)
+                    return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                return RedirectToAction("Logout", "Account");
+            }
             string date = closeTime + " " + closeTime1;
             DateTime dt = DateTime.Parse(date);
-            return View();
+            if (DateTime.UtcNow > dt) {
+                ViewBag.error = "Date has expired";
+                return View(channel);
+            }
+            channel.CloseTime = dt;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Channel");
         }
 
         [HttpGet]
