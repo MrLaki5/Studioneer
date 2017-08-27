@@ -14,9 +14,11 @@
         $.ajax({
             type: "POST",
             data: { id: number },
-            url: '@Url.Action("Index", "Question")',
+            url: '@Url.Action("IndexUp", "Question")',
                 success: function (result) {
                     if (result !== "error") {
+                        if (result === "error2")
+                            window.location = "@Url.Action("Logout", "Account")";
                         var elem1 = document.getElementById("numtoken");
                         elem1.innerHTML = result;
 
@@ -25,7 +27,6 @@
                         var name1 = "span " + number;
                         elem1 = document.getElementById(name1);
                         elem1.innerHTML = actname;
-
                     }
                 }
             });
@@ -33,9 +34,25 @@
 </script>
 
 
+
+
+
+@using (Html.BeginForm("Index", "Question", FormMethod.Get, new { id = "FormSrc", role = "form", @class= "form-inline" }))
+{
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary" id="srcbutt"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+        <input type="text" name="Search" class="form-control" value="@ViewBag.srch"/>     
+    </div>
+}
+
+<br />
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -76,7 +93,9 @@
             }
             else
             {
-                <span style="cursor:pointer" id="span @item.IdP"><a onclick="linkClick(@item.IdP)">Unlock (@ViewBag.unlock tokens)</a></span>
+                <span style="cursor:pointer" id="span @item.IdP"><a href="@Url.Action("Index", "Publish")/@item.IdP">Publish</a> | 
+                                                                 <a onclick="linkClick(@item.IdP)">Unlock (@ViewBag.unlock tokens)</a>
+                </span>
             }
         </td>
     </tr>

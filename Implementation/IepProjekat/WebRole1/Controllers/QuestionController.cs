@@ -15,7 +15,7 @@ namespace WebRole1.Controllers
         private Model1 db = new Model1();
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string Search="")
         {
             if (Session["type"] == null)
             {
@@ -40,7 +40,13 @@ namespace WebRole1.Controllers
                 User user = users.First();
                 int id = user.IdU;
                 var questions = from m in db.Questions select m;
-                questions = questions.Where(s => s.IdU==id);
+                questions = questions.Where(s => s.IsClone == 0);
+                questions = questions.Where(s => s.IdU == id);
+                if (string.Compare(Search, "") != 0)
+                {
+                    questions = questions.Where(s => s.Title.Contains(Search));
+                }
+                ViewBag.srch = Search;
                 return View(questions);
             }
             return RedirectToAction("Logout", "Account");
@@ -116,6 +122,8 @@ namespace WebRole1.Controllers
             {
                 User user = users.First();
                 Question question = questions.First();
+                if (question.IsClone==1)
+                    return RedirectToAction("Logout", "Account");
                 if (question.IdU == user.IdU)
                     return View(question);
             }
@@ -123,14 +131,14 @@ namespace WebRole1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(int id) {
+        public ActionResult IndexUp(int id) {
             if (Session["type"] == null)
             {
-                return RedirectToAction("Login", "Account");
+                return Content("error2", "text/plain");
             }
             if (Session["type"].ToString() != "Professor")
             {
-                return RedirectToAction("Logout", "Account");
+                return Content("error2", "text/plain");
             }
             var questions = from m in db.Questions select m;
             questions = questions.Where(s => s.IdP == id);
@@ -144,7 +152,7 @@ namespace WebRole1.Controllers
                 par = parameters.First();
             }
             else {
-                return RedirectToAction("Logout", "Account");
+                return Content("error2", "text/plain");
             }
 
             if (users.Any() && questions.Any())
@@ -152,7 +160,9 @@ namespace WebRole1.Controllers
                 User user = users.First();
                 Question question = questions.First();
                 if (question.IsLocked == 0)
-                    return RedirectToAction("Logout", "Account");
+                    return Content("error2", "text/plain");
+                if (question.IsClone == 1)
+                    return Content("error2", "text/plain");
                 if (question.IdU == user.IdU) {
                     if (user.Balans >= par.UnlockNumber) {
                         user.Balans -= par.UnlockNumber;
@@ -164,7 +174,7 @@ namespace WebRole1.Controllers
                     return Content("error", "text/plain");
                 }
             }
-            return RedirectToAction("Logout", "Account");
+            return Content("error2", "text/plain");
         }
 
         [HttpGet]
