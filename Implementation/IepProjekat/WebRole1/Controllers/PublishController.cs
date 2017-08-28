@@ -117,10 +117,43 @@ namespace WebRole1.Controllers
                                 var channels1 = channels;
                                 channels1 = channels1.Where(s => s.IdC.ToString().Equals(tempN));
                                 if (channels1.Any()) {
-
+                                    if (selBool == 0) {
+                                        db.Questions.Add(question);
+                                        db.SaveChanges();
+                                        selBool = 1;
+                                    }
+                                    Published pub = new Published
+                                    {
+                                        PubTime = DateTime.UtcNow,
+                                        IdC = channels1.First().IdC,
+                                        IdP = question.IdP
+                                    };
+                                    db.Publisheds.Add(pub);
+                                    //db.SaveChanges();
                                 }
                             }
                         }
+
+                        if (selBool == 1)
+                        {
+                            foreach (var item in questionOld.Answers)
+                            {
+                                Answer ans = new Answer();
+                                ans.IsCorrect = item.IsCorrect;
+                                ans.Number = item.Number;
+                                ans.Tag = item.Tag;
+                                ans.Text = item.Text;
+                                ans.IdP = question.IdP;
+                                db.Answers.Add(ans);
+                                //db.SaveChanges();
+                            }
+                            db.SaveChanges();
+                            ViewBag.msg = "Success";
+                        }
+                        else {
+                            ViewBag.msg = "No channels selected";
+                        }
+                        return View(channels);
                     }
                     else
                     {

@@ -13,8 +13,8 @@ namespace WebRole1.Models
         public Question()
         {
             Answers = new HashSet<Answer>();
+            Publisheds = new HashSet<Published>();
             Responses = new HashSet<Response>();
-            Channels = new HashSet<Channel>();
         }
 
         [Key]
@@ -29,9 +29,6 @@ namespace WebRole1.Models
         [StringLength(200)]
         public string Image { get; set; }
 
-        [StringLength(100)]
-        public string ImageName { get; set; }
-
         public DateTime? CreationTime { get; set; }
 
         public DateTime? LastLock { get; set; }
@@ -42,15 +39,18 @@ namespace WebRole1.Models
 
         public int? IsClone { get; set; }
 
+        [StringLength(100)]
+        public string ImageName { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Published> Publisheds { get; set; }
 
         public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Response> Responses { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Channel> Channels { get; set; }
     }
 }

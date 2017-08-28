@@ -16,6 +16,7 @@ namespace WebRole1.Models
         public virtual DbSet<Channel> Channels { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Parameter> Parameters { get; set; }
+        public virtual DbSet<Published> Publisheds { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Response> Responses { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
@@ -51,6 +52,11 @@ namespace WebRole1.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Channel>()
+                .HasMany(e => e.Publisheds)
+                .WithRequired(e => e.Channel)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Channel>()
                 .HasMany(e => e.Subscriptions)
                 .WithRequired(e => e.Channel)
                 .WillCascadeOnDelete(false);
@@ -81,14 +87,14 @@ namespace WebRole1.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Question>()
-                .HasMany(e => e.Responses)
+                .HasMany(e => e.Publisheds)
                 .WithRequired(e => e.Question)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Question>()
-                .HasMany(e => e.Channels)
-                .WithMany(e => e.Questions)
-                .Map(m => m.ToTable("Published").MapLeftKey("IdP").MapRightKey("IdC"));
+                .HasMany(e => e.Responses)
+                .WithRequired(e => e.Question)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Name)

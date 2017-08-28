@@ -189,6 +189,7 @@
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\Published.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Subscription.cs" />

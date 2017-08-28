@@ -13,8 +13,8 @@ namespace WebRole1.Models
         public Channel()
         {
             Responses = new HashSet<Response>();
+            Publisheds = new HashSet<Published>();
             Subscriptions = new HashSet<Subscription>();
-            Questions = new HashSet<Question>();
         }
 
         [Key]
@@ -40,9 +40,9 @@ namespace WebRole1.Models
         public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Subscription> Subscriptions { get; set; }
+        public virtual ICollection<Published> Publisheds { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Question> Questions { get; set; }
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
     }
 }
