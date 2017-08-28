@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebRole1.Models.Published>
+
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>History</h2>
+
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Question name
+        </th>
+        <th>
+            Publish time (UTC)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.Title)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.PubTime, "{0:dd/MMM/yyyy HH:mm}")
+        </td>
+        <td>
+            <span style="cursor:pointer" id="span @item.IdP">
+                <a href="@Url.Action("Details", "Question")/@item.IdP">Details</a>
+            </span> | 
+            <span style="cursor:pointer" id="span @item.IdP">
+                <a href="@Url.Action("Details", "Question")/@item.IdP">Student answers</a>
+            </span>
+        </td>
+    </tr>
+}
+
+</table>

@@ -25,10 +25,11 @@
                             var oTimeN = "openTime " + number;
                             var elem1 = document.getElementById(oTimeN);
                             elem1.innerHTML = result;
-                            element.innerText = "Close";
+
+                            
                             oTimeN = "span " + number;
                             elem1 = document.getElementById(oTimeN);
-                            elem1.innerHTML += ' | <a href="@Url.Action("timeSet", "Channel")/' + number +'">Set closing time</a>';
+                            elem1.innerHTML = '<a href="@Url.Action("History", "Channel")/' + number +'">History</a> | <a onclick="linkClick('+number+')" id="action '+number+'">Close</a> | <a href="@Url.Action("timeSet", "Channel")/' + number +'">Set closing time</a>';
                         }
                         else {
                             if (operation === "Close") {
@@ -37,7 +38,7 @@
                                 elem1.innerHTML = result;
                                 oTimeN = "span " + number;
                                 elem1 = document.getElementById(oTimeN);
-                                elem1.innerHTML = "";
+                                elem1.innerHTML = '<a href="@Url.Action("History", "Channel")/' + number +'">History</a>';
                             }
                         }
                     }
@@ -99,10 +100,16 @@
                 if (item.CloseTime == null)
                 {
                     <span id="span @item.IdC">
-                        <span style="cursor:pointer"><a onclick="linkClick(@item.IdC)" id="action @item.IdC">Close</a></span> 
+                        @Html.ActionLink("History", "History", new { id = item.IdC })
                         @{ WriteLiteral(" | "); }
+                        <span style="cursor:pointer"><a onclick="linkClick(@item.IdC)" id="action @item.IdC">Close</a></span> 
+                        @{ WriteLiteral(" | "); }                       
                         @Html.ActionLink("Set closing time", "timeSet", new { id = item.IdC })
                     </span>
+                }
+                else
+                {
+                    @Html.ActionLink("History", "History", new { id = item.IdC })
                 }
         </td>
     </tr>

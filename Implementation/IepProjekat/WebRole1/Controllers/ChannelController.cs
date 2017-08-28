@@ -203,5 +203,41 @@ namespace WebRole1.Controllers
             db.SaveChanges();
             return Content("Success", "text/plain");
         }
+
+        [HttpGet]
+        public ActionResult History(int? id)
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var channels = from m in db.Channels select m;
+            channels = channels.Where(s => s.IdC == id);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+
+            if (users.Any() && channels.Any())
+            {
+                User user = users.First();
+                Channel channel = channels.First();
+                if (channel.OpenTime == null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.IdU!=user.IdU)
+                    return RedirectToAction("Logout", "Account");
+                var published = from m in db.Publisheds select m;
+                published = published.Where(s => s.IdC == id);
+                return View(published);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
     }
 }

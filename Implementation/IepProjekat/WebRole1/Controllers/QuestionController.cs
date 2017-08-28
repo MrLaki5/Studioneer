@@ -122,8 +122,14 @@ namespace WebRole1.Controllers
             {
                 User user = users.First();
                 Question question = questions.First();
-                if (question.IsClone==1)
-                    return RedirectToAction("Logout", "Account");
+                if (question.IsClone == 1)
+                {
+                    ViewBag.clone = 1;
+                }
+                else
+                {
+                    ViewBag.clone = 0;
+                }
                 if (question.IdU == user.IdU)
                     return View(question);
             }
