@@ -342,14 +342,14 @@ namespace WebRole1.Controllers
                 pic = pom;
                 file.SaveAs(path);                                        // file is uploaded
                 succ = true;
-                if (question1.Image != null)
+                /*if (question1.Image != null)                              //deleting of old image, cos of copies should not be done
                 {
                     var filePath = Server.MapPath("~/Images/"+question1.ImageName);
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
                     }
-                }
+                }*/
             }
 
 

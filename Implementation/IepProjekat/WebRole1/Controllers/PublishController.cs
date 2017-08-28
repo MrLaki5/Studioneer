@@ -12,7 +12,7 @@ namespace WebRole1.Controllers
         private Model1 db = new Model1();
 
         [HttpGet]
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
             if (Session["type"] == null)
             {
@@ -20,6 +20,9 @@ namespace WebRole1.Controllers
             }
             if (Session["type"].ToString() != "Professor")
             {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (id == null) {
                 return RedirectToAction("Logout", "Account");
             }
 
@@ -31,10 +34,101 @@ namespace WebRole1.Controllers
                 User user = users.First();
                 int idU = user.IdU;
                 var questions = from m in db.Questions select m;
+                var channels = from m in db.Channels select m;
+                channels = channels.Where(s => s.IdU == idU);
+                channels = channels.Where(s => s.OpenTime != null);
+                channels = channels.Where(s => ((s.CloseTime == null) || (s.CloseTime > DateTime.UtcNow)));
                 questions = questions.Where(s => s.IdU == idU);
                 questions = questions.Where(s => s.IsClone == 0);
                 questions = questions.Where(s => s.IsLocked == 1);
-                return View(questions);
+                questions = questions.Where(s => s.IdP == id);
+                if (questions.Any())
+                {
+                    ViewBag.idQ = id;
+                    return View(channels);
+                }
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult Index()
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (Request.Form["idQ"] == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            string temp= Request.Form["idQ"];
+            int idP=0;
+            if (!Int32.TryParse(temp,out idP))
+                return RedirectToAction("Logout", "Account");
+
+
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                int idU = user.IdU;
+                var questions = from m in db.Questions select m;
+                var channels = from m in db.Channels select m;
+                channels = channels.Where(s => s.IdU == idU);
+                channels = channels.Where(s => s.OpenTime != null);
+                channels = channels.Where(s => ((s.CloseTime == null) || (s.CloseTime > DateTime.UtcNow)));
+                questions = questions.Where(s => s.IdU == idU);
+                questions = questions.Where(s => s.IsClone == 0);
+                questions = questions.Where(s => s.IsLocked == 1);
+                questions = questions.Where(s => s.IdP == idP);
+                if (questions.Any())
+                {
+                    Question question = new Question();
+                    Question questionOld = questions.First();
+                    question.Title = questionOld.Title;
+                    question.Text = questionOld.Text;
+                    question.IdU = questionOld.IdU;
+                    question.IsClone = 1;
+                    question.IsLocked = 1;
+                    question.CreationTime = questionOld.CreationTime;
+                    question.LastLock = questionOld.LastLock;
+                    question.Image = questionOld.Image;
+                    question.ImageName = questionOld.ImageName;
+
+
+
+                    ViewBag.idQ = idP;
+                    if (channels.Any())
+                    {
+                        int selBool = 0;
+                        int numberOfChan = channels.Count();
+                        string tempN = "";
+                        for (int i = 0; i < numberOfChan; i++) {
+                            tempN = "box " + i.ToString();
+                            if (Request.Form[tempN] != null) {
+                                tempN = Request.Form[tempN];
+                                var channels1 = channels;
+                                channels1 = channels1.Where(s => s.IdC.ToString().Equals(tempN));
+                                if (channels1.Any()) {
+
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.msg = "No channels selected";
+                        return View(channels);
+
+                    }
+                }
             }
             return RedirectToAction("Logout", "Account");
         }
