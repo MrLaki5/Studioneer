@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebRole1.Models.Subscription>
+
+@{
+    ViewBag.Title = "Subscribtions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function linkClick(number) {
+        var name = "action " + number;
+        var element = document.getElementById(name);
+        var func = element.innerText;
+        $.ajax({
+            type: "POST",
+            data: { id: number, func: func},
+            url: '@Url.Action("Subscribed", "Channel")',
+                success: function (result) {
+                    if (result !== "error") {
+                        if (result === "error2")
+                            window.location = "@Url.Action("Logout", "Account")";
+                        if (func === "Activate premium") {
+                            element.innerText = "Deactivate premium";
+                        }
+                        else {
+                            if (func === "Deactivate premium") {
+                                element.innerText = "Activate premium";
+                            }
+                        }                     
+                    }
+                }
+            });
+    }
+</script>
+
+<h2>Subscribtions</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Channel name
+        </th>
+        <th>
+            Professor's name
+        </th>
+        <th>
+            Professor's lastname
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.User.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.User.Lastname)
+        </td>
+        <td>
+            @if (@item.IsPremium == 0)
+            {
+                <span style="cursor:pointer">
+                    <a onclick="linkClick(@item.Channel.IdC)" id="action @item.Channel.IdC">Activate premium</a>
+                </span>
+            }
+            else
+            {
+                <span style="cursor:pointer">
+                    <a onclick="linkClick(@item.Channel.IdC)" id="action @item.Channel.IdC">Deactivate premium</a>
+                </span>
+            }
+        </td>
+    </tr>
+}
+
+</table>

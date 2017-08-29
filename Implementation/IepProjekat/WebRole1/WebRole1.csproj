@@ -254,6 +254,7 @@
     <Content Include="Views\Channel\StAnswers.cshtml" />
     <Content Include="Views\Question\Answering.cshtml" />
     <Content Include="Views\Channel\EnterPass.cshtml" />
+    <Content Include="Views\Channel\Subscribed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
