@@ -37,6 +37,11 @@
                             <li>@Html.ActionLink("Questions", "Index", "Question")</li>
                             <li>@Html.ActionLink("Channels", "Index", "Channel")</li>
                         }
+                        if (@HttpContext.Current.Session["type"].ToString() == "Student")
+                        {
+                            <li>@Html.ActionLink("New channels", "ActiveChannels", "Channel")</li>
+                            <li>@Html.ActionLink("Subscriptions", "ActiveChannels", "Channel")</li>
+                        }
                     }
                 </ul>
                 @Html.Partial("_LoginPartial");

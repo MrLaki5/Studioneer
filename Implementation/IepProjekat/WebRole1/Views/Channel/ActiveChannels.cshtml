@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebRole1.Models.Channel>
+
+@{
+    ViewBag.Title = "ActiveChannels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add new channel</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Channel name
+        </th>
+        <th>
+            Professor's name
+        </th>
+        <th>
+            Professor's lastname
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Lastname)
+        </td>
+        <td>
+            @Html.ActionLink("Subscribe", "EnterPass", new { id = item.IdC })
+        </td>
+    </tr>
+}
+
+</table>

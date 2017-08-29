@@ -283,5 +283,101 @@ namespace WebRole1.Controllers
             }
             return RedirectToAction("Logout", "Account");
         }
+
+        //Student:
+
+        [HttpGet]
+        public ActionResult ActiveChannels() {
+            if (Session["type"] == null)
+                return RedirectToAction("Login", "Account");
+            if (Session["type"].ToString() != "Student")
+                return RedirectToAction("Logout", "Account");
+            var channels = from m in db.Channels select m;
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                channels = channels.Where(s => s.OpenTime != null);
+                channels = channels.Where(s => ((s.CloseTime == null) || (s.CloseTime > DateTime.UtcNow)));
+                channels = channels.Where(s => !subscription.Any(s2 => s2.IdC == s.IdC));
+                return View(channels);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult EnterPass(int? id) {
+            if (Session["type"] == null)
+                return RedirectToAction("Login", "Account");
+            if (Session["type"].ToString() != "Student")
+                return RedirectToAction("Logout", "Account");
+            if (id==null)
+                return RedirectToAction("Logout", "Account");
+            var channels = from m in db.Channels select m;
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                channels = channels.Where(s => s.OpenTime != null);
+                channels = channels.Where(s => ((s.CloseTime == null) || (s.CloseTime > DateTime.UtcNow)));
+                channels = channels.Where(s => !subscription.Any(s2 => s2.IdC == s.IdC));
+                channels = channels.Where(s => s.IdC == id);
+                if (channels.Any()) {
+                    return View(channels.First());
+                }
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult EnterPass(int id, string password)
+        {
+            if (Session["type"] == null)
+                return RedirectToAction("Login", "Account");
+            if (Session["type"].ToString() != "Student")
+                return RedirectToAction("Logout", "Account");
+            var channels = from m in db.Channels select m;
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                channels = channels.Where(s => s.OpenTime != null);
+                channels = channels.Where(s => ((s.CloseTime == null) || (s.CloseTime > DateTime.UtcNow)));
+                channels = channels.Where(s => !subscription.Any(s2 => s2.IdC == s.IdC));
+                channels = channels.Where(s => s.IdC == id);
+                if (channels.Any())
+                {
+                    Channel chan = channels.First();
+                    string rpass = chan.Password;
+                    string npass= FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+                    if (string.Compare(npass, rpass) != 0)
+                    {
+                        ViewBag.error = "Wrong password";
+                        return View(chan);
+                    }                    
+                    Subscription sub = new Subscription();
+                    sub.IdC = chan.IdC;
+                    sub.IdU = user.IdU;
+                    sub.IsPremium = 0;
+                    db.Subscriptions.Add(sub);
+                    db.SaveChanges();
+                    ViewBag.succ = 1;
+                    return View(chan);
+                }
+            }
+            return RedirectToAction("Logout", "Account");
+        }
     }
 }
