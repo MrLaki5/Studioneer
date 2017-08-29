@@ -253,6 +253,7 @@
     <Content Include="Views\Channel\History.cshtml" />
     <Content Include="Views\Channel\StAnswers.cshtml" />
     <Content Include="Views\Question\Answering.cshtml" />
+    <Content Include="Views\Channel\EnterPass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
