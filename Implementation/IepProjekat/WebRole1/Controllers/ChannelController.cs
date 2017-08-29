@@ -379,5 +379,63 @@ namespace WebRole1.Controllers
             }
             return RedirectToAction("Logout", "Account");
         }
+
+        [HttpGet]
+        public ActionResult Subscribed()
+        {
+            if (Session["type"] == null)
+                return RedirectToAction("Login", "Account");
+            if (Session["type"].ToString() != "Student")
+                return RedirectToAction("Logout", "Account");
+            var channels = from m in db.Channels select m;
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);               
+                return View(subscription);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult Subscribed(int id, string func)
+        {
+            if (Session["type"] == null)
+                return Content("error2", "text/plain");
+            if (Session["type"].ToString() != "Student")
+                return Content("error2", "text/plain");
+            var channels = from m in db.Channels select m;
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                subscription = subscription.Where(s => s.IdC == id);
+                if (subscription.Any())
+                {
+                    Subscription sub = subscription.First();
+                    if (string.Compare(func, "Activate premium") == 0)
+                    {
+                        sub.IsPremium = 1;
+                        db.SaveChanges();
+                        return Content("success", "text/plain");
+                    }
+                    if (string.Compare(func, "Deactivate premium") == 0)
+                    {
+                        sub.IsPremium = 0;
+                        db.SaveChanges();
+                        return Content("success", "text/plain");
+                    }
+                }
+            }
+            return Content("error2", "text/plain");
+        }
     }
 }
