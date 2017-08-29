@@ -550,6 +550,14 @@ namespace WebRole1.Controllers
 
             return RedirectToAction("Index", "Question");
         }
+
+        [HttpGet]
+        public ActionResult Answering()
+        {
+            var questions = from m in db.Questions select m;
+            questions = questions.Where(s => s.IdP == 9);
+            return View(questions.First());
+        }
     }
 
 }
