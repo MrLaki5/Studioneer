@@ -35,7 +35,7 @@
                 <a href="@Url.Action("Details", "Question")/@item.IdP">Details</a>
             </span> | 
             <span style="cursor:pointer" id="span @item.IdP">
-                <a href="@Url.Action("Details", "Question")/@item.IdP">Student answers</a>
+                <a href="@Url.Action("StAnswers", "Channel")?chann=@ViewBag.chann&publish=@item.IdPub">Student answers</a>
             </span>
         </td>
     </tr>

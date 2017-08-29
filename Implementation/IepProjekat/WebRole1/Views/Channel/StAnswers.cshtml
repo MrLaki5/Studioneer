@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WebRole1.Models.Response>
+
+@{
+    ViewBag.Title = "Answers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Student answers</h2>
+
+
+<p>
+    <span style="cursor:pointer">
+        <a href="@Url.Action("History", "Channel")?id=@ViewBag.chann">Back</a>
+    </span>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Student name
+        </th>
+        <th>
+            Student lastname
+        </th>
+        <th>
+            Sent time (UTC)
+        </th>
+        <th>
+            Answer
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    if (@item.Answer.IsCorrect == 1)
+    {
+        <tr class="text-success">
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Lastname)
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.SendTime, "{0:dd/MMM/yyyy HH:mm}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer.Tag)
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr class="text-danger">
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Lastname)
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.SendTime, "{0:dd/MMM/yyyy HH:mm}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer.Tag)
+            </td>
+        </tr>
+    }
+}
+
+</table>

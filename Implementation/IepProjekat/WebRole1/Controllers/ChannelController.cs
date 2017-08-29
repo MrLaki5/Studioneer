@@ -234,8 +234,52 @@ namespace WebRole1.Controllers
                 if (channel.IdU!=user.IdU)
                     return RedirectToAction("Logout", "Account");
                 var published = from m in db.Publisheds select m;
+                ViewBag.chann = channel.IdC;
                 published = published.Where(s => s.IdC == id);
                 return View(published);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult StAnswers(int? chann, int? publish) {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Professor")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if ((chann == null) || (publish == null))
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            var channels = from m in db.Channels select m;
+            channels = channels.Where(s => s.IdC == chann);
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+
+            if (users.Any() && channels.Any())
+            {
+                User user = users.First();
+                Channel channel = channels.First();
+                if (channel.OpenTime == null)
+                    return RedirectToAction("Logout", "Account");
+                if (channel.IdU != user.IdU)
+                    return RedirectToAction("Logout", "Account");
+                var published = from m in db.Publisheds select m;
+                published = published.Where(s => s.IdC == chann);
+                published = published.Where(s => s.IdPub == publish);
+                ViewBag.chann = channel.IdC;
+                if (published.Any()) {
+                    Published pub = published.First();
+                    var responses = from m in db.Responses select m;
+                    responses = responses.Where(s => s.IdP == pub.IdP);
+                    responses = responses.Where(s => s.IdC == channel.IdC);
+                    return View(responses);
+                }
             }
             return RedirectToAction("Logout", "Account");
         }

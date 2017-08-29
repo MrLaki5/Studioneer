@@ -251,6 +251,7 @@
     <Content Include="Views\Channel\timeSet.cshtml" />
     <Content Include="Views\Publish\Index.cshtml" />
     <Content Include="Views\Channel\History.cshtml" />
+    <Content Include="Views\Channel\StAnswers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
