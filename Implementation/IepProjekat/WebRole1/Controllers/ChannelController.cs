@@ -387,7 +387,6 @@ namespace WebRole1.Controllers
                 return RedirectToAction("Login", "Account");
             if (Session["type"].ToString() != "Student")
                 return RedirectToAction("Logout", "Account");
-            var channels = from m in db.Channels select m;
             var subscription = from m in db.Subscriptions select m;
             var users = from m in db.Users select m;
             string email = Session["email"].ToString();
@@ -395,7 +394,9 @@ namespace WebRole1.Controllers
             if (users.Any())
             {
                 User user = users.First();
-                subscription = subscription.Where(s => s.IdU == user.IdU);               
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                subscription = subscription.Where(s => s.Channel.OpenTime != null);
+                subscription = subscription.Where(s => ((s.Channel.CloseTime == null) || (s.Channel.CloseTime > DateTime.UtcNow)));
                 return View(subscription);
             }
             return RedirectToAction("Logout", "Account");
@@ -408,7 +409,6 @@ namespace WebRole1.Controllers
                 return Content("error2", "text/plain");
             if (Session["type"].ToString() != "Student")
                 return Content("error2", "text/plain");
-            var channels = from m in db.Channels select m;
             var subscription = from m in db.Subscriptions select m;
             var users = from m in db.Users select m;
             string email = Session["email"].ToString();
@@ -417,6 +417,8 @@ namespace WebRole1.Controllers
             {
                 User user = users.First();
                 subscription = subscription.Where(s => s.IdU == user.IdU);
+                subscription = subscription.Where(s => s.Channel.OpenTime != null);
+                subscription = subscription.Where(s => ((s.Channel.CloseTime == null) || (s.Channel.CloseTime > DateTime.UtcNow)));
                 subscription = subscription.Where(s => s.IdC == id);
                 if (subscription.Any())
                 {

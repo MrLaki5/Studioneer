@@ -605,3 +605,14 @@ C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRo
 C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.dll
 C:\Users\dragan\Desktop\Lep2projekat\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.pdb
 D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Security.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Owin.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.xml
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Security.xml

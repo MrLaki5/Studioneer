@@ -165,5 +165,42 @@ namespace WebRole1.Controllers
             }
             return RedirectToAction("Logout", "Account");
         }
+
+        //Student
+
+        [HttpGet]
+        public ActionResult Blackboard() {
+            if (Session["type"] == null)
+                return RedirectToAction("Login", "Account");
+            if (Session["type"].ToString() != "Student")
+                return RedirectToAction("Logout", "Account");
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                subscription = subscription.Where(s => s.Channel.OpenTime != null);
+                subscription = subscription.Where(s => ((s.Channel.CloseTime == null) || (s.Channel.CloseTime > DateTime.UtcNow)));
+
+                var channels = from m in db.Channels select m;
+                channels = channels.Where(s => subscription.Any(s2 => s2.IdC == s.IdC));
+
+                var publisheds= from m in db.Publisheds select m;
+                publisheds= publisheds.Where(s => channels.Any(s2 => s2.IdC == s.IdC));
+
+                var responses = from m in db.Responses select m;
+                responses = responses.Where(s => s.IdU == user.IdU);
+
+                publisheds = publisheds.Where(s => !responses.Any(s2 => s2.IdC == s.IdC && s2.IdP == s.IdP));
+
+
+                ViewBag.channs = channels.ToList();
+                return View(publisheds);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
     }
 }
