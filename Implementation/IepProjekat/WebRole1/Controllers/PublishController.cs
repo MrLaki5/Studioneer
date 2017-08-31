@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebRole1.Models;
 
 namespace WebRole1.Controllers
@@ -197,7 +198,15 @@ namespace WebRole1.Controllers
                 publisheds = publisheds.Where(s => !responses.Any(s2 => s2.IdC == s.IdC && s2.IdP == s.IdP));
 
 
-                ViewBag.channs = channels.ToList();
+                Channel []ch = channels.ToArray();
+                List<String> tempL = new List<string>();
+                string tempStr = "";
+                foreach (var item in ch) {
+                    tempStr = item.Name + item.Password;
+                    tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1");
+                    tempL.Add(tempStr);
+                }
+                ViewBag.chann = tempL;
                 return View(publisheds);
             }
             return RedirectToAction("Logout", "Account");
