@@ -1,4 +1,4 @@
-﻿@model WebRole1.Models.Question
+﻿@model WebRole1.Models.Published
 @{
     ViewBag.Title = "Answering";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,25 +38,25 @@
 
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
-    <span style="display:none" id="name">@Model.IdP</span>
+    <span style="display:none" id="nameP">@Model.IdPub</span>
     <div class="row text-center">
-        <div class="form-group col-md-6 col-md-offset-3">
+        <div class="form-group col-sm-6 col-sm-offset-3">
            <br />
-            <h2>@Model.Title</h2>
+            <h2>@Model.Question.Title</h2>
         </div>
         </div>
     <div class="row">
-        <div class="form-group col-md-6 col-md-offset-3">
-            <h4 class="texth4">@Model.Text</h4>
+        <div class="form-group col-sm-6 col-sm-offset-3">
+            <h4>@Model.Question.Text</h4>
         </div>
     </div>
 
     <div class="row">
-        @if (@Model.ImageName != null)
+        @if (@Model.Question.ImageName != null)
             {
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-sm-4 col-sm-offset-4">
                 
-                <img class="img-responsive imgz" id='img-upload' src="/Images/@Model.ImageName" />
+                <img class="img-responsive imgz" id='img-upload' src="/Images/@Model.Question.ImageName" />
                 <br />
             </div>
         }
@@ -64,34 +64,38 @@
 
     <div class="row">
         
-        @foreach (var item in Model.Answers)
+        @foreach (var item in Model.Question.Answers)
             {
             <div class="row">
               <!--<div class="col-md-offset-4"><span class="letters">@item.Tag)</span></div> -->  
-                <div class="input-group col-md-4 col-md-offset-4">
+                <div class="input-group col-sm-4 col-sm-offset-4">
                    
-                   
-                        <label id="msg" type="text" name="answer @item.Number">@item.Tag) @item.Text</label>
+                   <span style="display:inline-block">@item.Tag)</span>
+                    <p style="display:inline"><label style="display:inline" id="msg @item.IdA" type="text" name="answer @item.Number"> @item.Text</label></p>
+                        
+                    
                   
                         &nbsp
                 </div>
                 <div>
-                    <input class="onlyme"  type="checkbox" name="only" />
+                    <input class="onlyme"  type="checkbox" name="only" value="@item.IdA"/>
                 </div>
             </div>
+            <br />
         }
 
       </div>
             <div class="form-group"></div>
 
            
-                <div class="form-group col-md-4 col-md-offset-4">
+                <div class="form-group col-sm-12 text-center">
                     <button type="button" class="btn btn-primary" id="beckC"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
-                    <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-usd"></span>&nbsp Premium</button>
+                    <button type="button" class="btn btn-primary" id="sendAnswerasa"><span class="glyphicon glyphicon-usd"></span>&nbsp Premium</button>
                     <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-print"></span>&nbsp Submit</button>
                 </div>
-            
-
+           <div class="form-group col-sm-12 text-center">
+               <label id="result"></label>
+           </div> 
 </form>
 
 
@@ -116,26 +120,45 @@
             window.location = '@Url.Action("Editor", "Question")/'+number;
         });
 
-        $('#unlock').on('click', function clickU() {
-            var number = $('#name').text();
+        $('#sendAnswer').on('click', function clickU() {
+            var elements = document.getElementsByName("only");
+            var id = -1;
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].checked) {
+                    id = elements[i].value;
+                    break;
+                }
+            }
+            if (id === -1) {
+                document.getElementById("result").innerText = "Answer must be selected";
+                return;
+            }
+
+            var idP = document.getElementById("nameP").innerText;
+
             $.ajax({
-            type: "POST",
-            data: { id: number },
-            url: '@Url.Action("Index", "Question")',
+                type: "POST",
+                data: { published: idP, answer: id },
+                url: '@Url.Action("Answering", "Question")',
                 success: function (result) {
                     if (result !== "error") {
+                        if (result === "error2") {
+                            window.location='@Url.Action("Logout", "Account")';
+                        }
+
+                        var array = result.split("<>");
+
+                        if (array[0] === "-1") {
+                            return;
+                        }
+
+                        var nmMsg = "msg " + array[0];
+                        elements = document.getElementById(nmMsg);
+                        elements.className += " text-success";
+
+
                         var elem1 = document.getElementById("numtoken");
-                        elem1.innerHTML = result;
-
-                        var actname ='<button type="button" class="btn btn-primary" id="edit1"><span class="glyphicon glyphicon-edit"></span>&nbsp Edit</button>';
-
-                        elem1 = document.getElementById("buttCh");
-                        elem1.innerHTML = actname;
-
-                        $('#edit1').on('click', function clckF1() {
-                               var number = $('#name').text();
-                                window.location = '@Url.Action("Editor", "Question")/'+number;
-                        });
+                        elem1.innerHTML = array[1];
 
                     }
                 }

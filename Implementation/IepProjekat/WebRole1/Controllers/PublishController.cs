@@ -160,6 +160,7 @@ namespace WebRole1.Controllers
                                 group= FormsAuthentication.HashPasswordForStoringInConfigFile(group, "SHA1");
 
                                 string idChann = item.Channel.IdC.ToString();
+                                string idQuest = item.IdP.ToString();
                                 string channame = item.Channel.Name;
                                 string title = question.Title;
                                 string text = question.Text;
@@ -173,7 +174,7 @@ namespace WebRole1.Controllers
                                     }
                                 }
                                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<BoardHub>();
-                                hubContext.Clients.Group(group).boardfresh(idChann, channame, title, text, answers, time);
+                                hubContext.Clients.Group(group).boardfresh(idQuest, idChann, channame, title, text, answers, time);
                             }
                             ViewBag.msg = "Success";
                         }

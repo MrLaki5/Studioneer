@@ -242,3 +242,14 @@ D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\zh-H
 D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\zh-Hant\Microsoft.Data.OData.resources.dll
 D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\zh-Hant\Microsoft.Data.Services.Client.resources.dll
 D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\zh-Hant\System.Spatial.resources.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.Security.dll
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.Security.xml
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Microsoft.Owin.xml
+D:\auctioneer\Implementation\IepProjekat\IepProjekat\obj\Debug\WebRole1\bin\Owin.dll

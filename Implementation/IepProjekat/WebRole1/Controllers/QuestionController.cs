@@ -555,13 +555,15 @@ namespace WebRole1.Controllers
         //Student
 
         [HttpGet]
-        public ActionResult Answering(int? id)
+        public ActionResult Answering(int? id, int? chan)
         {
             if (Session["type"] == null)
                 return RedirectToAction("Login", "Account");
             if (Session["type"].ToString() != "Student")
                 return RedirectToAction("Logout", "Account");
             if (id==null)
+                return RedirectToAction("Logout", "Account");
+            if (chan == null)
                 return RedirectToAction("Logout", "Account");
             var subscription = from m in db.Subscriptions select m;
             var users = from m in db.Users select m;
@@ -586,12 +588,107 @@ namespace WebRole1.Controllers
                 publisheds = publisheds.Where(s => !responses.Any(s2 => s2.IdC == s.IdC && s2.IdP == s.IdP));
                 publisheds = publisheds.Where(s => s.IdP == id);
 
+                publisheds = publisheds.Where(s => s.IdC == chan);
+
                 if (publisheds.Any())
                 {
                     return View(publisheds.First());
                 }
             }
             return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpPost]
+        public ActionResult Answering(int published, int answer)
+        {
+            if (Session["type"] == null)
+                return Content("error2", "text/plain");
+            if (Session["type"].ToString() != "Student")
+                return Content("error2", "text/plain");
+            var parameters = from m in db.Parameters select m;
+            int tokens = 0;
+            if (parameters.Any())
+            {
+                Parameter par = parameters.First();
+                if (par.PremiumNumber != null)
+                    tokens = (int)par.PremiumNumber;
+            }
+            else
+            {
+                return Content("error2", "text/plain");
+            }
+            var subscription = from m in db.Subscriptions select m;
+            var users = from m in db.Users select m;
+            string email = Session["email"].ToString();
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                subscription = subscription.Where(s => s.IdU == user.IdU);
+                subscription = subscription.Where(s => s.Channel.OpenTime != null);
+                subscription = subscription.Where(s => ((s.Channel.CloseTime == null) || (s.Channel.CloseTime > DateTime.UtcNow)));
+
+                var channels = from m in db.Channels select m;
+                channels = channels.Where(s => subscription.Any(s2 => s2.IdC == s.IdC));
+
+                var publisheds = from m in db.Publisheds select m;
+                publisheds = publisheds.Where(s => channels.Any(s2 => s2.IdC == s.IdC));
+
+                var responses = from m in db.Responses select m;
+                responses = responses.Where(s => s.IdU == user.IdU);
+
+                publisheds = publisheds.Where(s => !responses.Any(s2 => s2.IdC == s.IdC && s2.IdP == s.IdP));
+                publisheds = publisheds.Where(s => s.IdPub == published);
+
+                if (publisheds.Any())
+                {
+                   
+                    Published pubb = publisheds.First();
+                    Question quest = pubb.Question;
+
+                    var answers = from m in db.Answers select m;
+                    answers = answers.Where(s => s.IdP == quest.IdP);
+                    var answers1 = answers;
+                    answers = answers.Where(s => s.IsCorrect == 1);
+                    answers1 = answers1.Where( s=> s.IdA==answer);
+                    if (answers1.Any() && answers.Any()) {
+                        subscription = subscription.Where(s => s.IdC == pubb.IdC);
+                        if (subscription.Any()) {
+                            Subscription subb = subscription.First();
+                            Response respo = new Response();
+                            respo.IdU = user.IdU;
+                            respo.IdP = quest.IdP;
+                            respo.IdA = answers1.First().IdA;
+                            respo.IdC = subb.IdC;
+                            respo.SendTime = DateTime.UtcNow;
+                            db.Responses.Add(respo);
+                            db.SaveChanges();
+                            if (subb.IsPremium == 1)
+                            {
+                                if (user.Balans < tokens)
+                                {
+                                    subb.IsPremium = 0;
+                                    db.SaveChanges();
+                                    return Content("-1<>0", "text/plain");
+                                }
+                                else {
+                                    user.Balans -= tokens;
+                                    string tempStr = answers.First().IdA.ToString();
+                                    tempStr += "<>";
+                                    tempStr += user.Balans.ToString();
+                                    db.SaveChanges();
+                                    return Content(tempStr, "text/plain");
+                                }
+                            }
+                            else
+                            {
+                                return Content("-1<>0", "text/plain");
+                            }
+                        }
+                    }
+                }
+            }
+            return Content("error2", "text/plain");
         }
     }
 
