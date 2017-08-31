@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using WebRole1.Hubs;
 using WebRole1.Models;
 
 namespace WebRole1.Controllers
@@ -102,7 +104,8 @@ namespace WebRole1.Controllers
                     question.LastLock = questionOld.LastLock;
                     question.Image = questionOld.Image;
                     question.ImageName = questionOld.ImageName;
-
+                    List<Published> PubList = new List<Published>();
+                    List<Answer> AnsList = new List<Answer>();
 
 
                     ViewBag.idQ = idP;
@@ -118,6 +121,7 @@ namespace WebRole1.Controllers
                                 var channels1 = channels;
                                 channels1 = channels1.Where(s => s.IdC.ToString().Equals(tempN));
                                 if (channels1.Any()) {
+                                    Channel chann = channels1.First();
                                     if (selBool == 0) {
                                         db.Questions.Add(question);
                                         db.SaveChanges();
@@ -126,10 +130,11 @@ namespace WebRole1.Controllers
                                     Published pub = new Published
                                     {
                                         PubTime = DateTime.UtcNow,
-                                        IdC = channels1.First().IdC,
+                                        IdC = chann.IdC,
                                         IdP = question.IdP
                                     };
                                     db.Publisheds.Add(pub);
+                                    PubList.Add(pub);
                                     //db.SaveChanges();
                                 }
                             }
@@ -146,9 +151,30 @@ namespace WebRole1.Controllers
                                 ans.Text = item.Text;
                                 ans.IdP = question.IdP;
                                 db.Answers.Add(ans);
+                                AnsList.Add(ans);
                                 //db.SaveChanges();
                             }
                             db.SaveChanges();
+                            foreach (var item in PubList) {
+                                string group = item.Channel.Name + item.Channel.Password;
+                                group= FormsAuthentication.HashPasswordForStoringInConfigFile(group, "SHA1");
+
+                                string idChann = item.Channel.IdC.ToString();
+                                string channame = item.Channel.Name;
+                                string title = question.Title;
+                                string text = question.Text;
+                                string time = String.Format("{0:dd/MMM/yyyy HH:mm}", item.PubTime);
+                                string answers = "";
+                                int k = AnsList.Count;
+                                for (int i=0; i<k;i++) {
+                                    answers += AnsList.ElementAt(i).Tag + ") " + AnsList.ElementAt(i).Text;
+                                    if ((i + 1) != k) {
+                                        answers += "<NewAns>";
+                                    }
+                                }
+                                var hubContext = GlobalHost.ConnectionManager.GetHubContext<BoardHub>();
+                                hubContext.Clients.Group(group).boardfresh(idChann, channame, title, text, answers, time);
+                            }
                             ViewBag.msg = "Success";
                         }
                         else {
