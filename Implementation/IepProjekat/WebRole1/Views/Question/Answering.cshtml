@@ -22,13 +22,7 @@
         font-weight:lighter;
         margin-left:10px;
     }
-    .texth4 {
-        margin-left:50px;
-
-    }
-    .letters {
-        margin-left:70px;
-    }
+    
     .imgz {
         border:1px solid black;
         margin-left:25px;
@@ -45,14 +39,14 @@
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
     <span style="display:none" id="name">@Model.IdP</span>
-    <div class="row">
-        <div class="form-group col-md-4 col-md-offset-5">
+    <div class="row text-center">
+        <div class="form-group col-md-6 col-md-offset-3">
            <br />
             <h2>@Model.Title</h2>
         </div>
         </div>
     <div class="row">
-        <div class="form-group col-md-4 col-md-offset-4">
+        <div class="form-group col-md-6 col-md-offset-3">
             <h4 class="texth4">@Model.Text</h4>
         </div>
     </div>
@@ -72,46 +66,31 @@
         
         @foreach (var item in Model.Answers)
             {
-
-            <div class="input-group col-md-8 col-md-offset-4">
-                <span class="letters">@item.Tag)</span>
-                <label id="msg" type="text" name="answer @item.Number">@item.Text</label>
-                &nbsp
-                @if (@item.IsCorrect == 1)
-                {
-                    <label class="labele"><input type="radio" checked name="radio202"></label>
-                }
-                else
-                {
-                    <label class="labele"><input type="radio" name="radio202"></label>
-                }
+            <div class="row">
+              <!--<div class="col-md-offset-4"><span class="letters">@item.Tag)</span></div> -->  
+                <div class="input-group col-md-4 col-md-offset-4">
+                   
+                   
+                        <label id="msg" type="text" name="answer @item.Number">@item.Tag) @item.Text</label>
+                  
+                        &nbsp
+                </div>
+                <div>
+                    <input class="onlyme"  type="checkbox" name="only" />
+                </div>
             </div>
         }
 
       </div>
             <div class="form-group"></div>
 
-            @if (ViewBag.clone == 0)
-            {
-                <div class="form-group col-md-4">
-                    <button type="button" class="btn btn-primary" id="beck"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
-                    @if (Model.IsLocked == 1)
-                {
-                        <span id="buttCh"><button type="button" class="btn btn-primary" id="unlock"><span class="glyphicon glyphicon-lock"></span>&nbsp Unlock (@ViewBag.unlock)</button></span>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-primary" id="edit"><span class="glyphicon glyphicon-edit"></span>&nbsp Edit</button>
-                    }
-                </div>
-            }
-            else
-            {
+           
                 <div class="form-group col-md-4 col-md-offset-4">
                     <button type="button" class="btn btn-primary" id="beckC"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
+                    <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-usd"></span>&nbsp Premium</button>
                     <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-print"></span>&nbsp Submit</button>
                 </div>
-            }
+            
 
 </form>
 
@@ -120,6 +99,9 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $('.onlyme').on('change', function () {
+            $('.onlyme').not(this).prop('checked', false);
+        });
 
         $('#beck').on('click', function clckF() {
             window.location = "@Url.Action("Index", "Question")";
