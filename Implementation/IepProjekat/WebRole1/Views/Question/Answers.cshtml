@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WebRole1.Models.Response>
+
+@{
+    ViewBag.Title = "Answers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My answers</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Question name
+        </th>
+        <th>
+            Answer tag
+        </th>
+        <th>
+            Channel id
+        </th>
+        <th>
+            Channel name
+        </th>
+        <th>
+            Answerd time (UTC)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Answer.Tag)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.IdC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Channel.Name)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.SendTime, "{0:dd/MMM/yyyy HH:mm}")
+        </td>
+        <td>
+            <span style="cursor:pointer" id="span @item.IdP">
+                <a href="@Url.Action("AnswerDetails", "Question")?idC=@item.IdC&idP=@item.IdP">Details</a>
+            </span>
+        </td>
+    </tr>
+}
+
+</table>

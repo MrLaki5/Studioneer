@@ -1,0 +1,77 @@
+﻿@model WebRole1.Models.Response
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Answer details</h2>
+
+<style>
+    #img-upload {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+</style>
+
+
+
+
+@Html.AntiForgeryToken()
+
+
+@Html.ValidationSummary("", new { @class = "text-danger center" })
+
+
+<div class="form-group">
+    <label for="title">Title:</label><br />
+    @Html.DisplayFor(model => model.Question.Title)
+</div>
+
+<div class="form-group">
+    <label for="text">Text:</label><br />
+    @Html.DisplayFor(model => model.Question.Text)
+</div>
+
+
+@if (@Model.Question.ImageName != null)
+{
+    <label>Image:</label><br />
+        <img id='img-upload' src="/Images/@Model.Question.ImageName" />
+        <br />
+}
+
+<label>Answers:</label><br />
+@foreach (var item in Model.Question.Answers)
+{
+    <div class="input-group">
+        @if (@item.IdA == Model.IdA)
+        {
+            <label class="text-primary">@item.Tag)&nbsp</label>
+                <span class="text-primary">@Html.DisplayFor(model => item.Text)</span>
+        }
+        else
+        {
+            <label>@item.Tag)&nbsp</label>
+                <span>@Html.DisplayFor(model => item.Text)</span>
+        }
+    </div>
+}
+<div class="form-group"></div>
+
+
+<div class="form-group">
+    <button type="button" class="btn btn-primary" id="beck"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#beck').on('click', function clckF() {
+            window.location = "@Url.Action("Answers", "Question")";
+        });
+
+    });
+</script>

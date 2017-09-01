@@ -39,6 +39,7 @@
     @Html.ValidationSummary("", new { @class = "text-danger center" })
 
     <span style="display:none" id="nameP">@Model.IdPub</span>
+    <span style="display:none" id="nameC">@Model.Channel.IdC</span>
     <div class="row text-center">
         <div class="form-group col-sm-6 col-sm-offset-3">
            <br />
@@ -90,8 +91,18 @@
            
                 <div class="form-group col-sm-12 text-center">
                     <button type="button" class="btn btn-primary" id="beckC"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
-                    <button type="button" class="btn btn-primary" id="sendAnswerasa"><span class="glyphicon glyphicon-usd"></span>&nbsp Premium</button>
-                    <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-print"></span>&nbsp Submit</button>
+                    <span id="subButSpan">
+                        @if (ViewBag.premium == 1)
+                        {
+                            <button type="button" class="btn btn-primary" id="premium" name="Deactivate premium">Deactivate premium</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary" id="premium" name="Activate premium">Activate premium</button>
+                        }
+
+                        <button type="button" class="btn btn-primary" id="sendAnswer"><span class="glyphicon glyphicon-print"></span>&nbsp Submit</button>
+                    </span>
                 </div>
            <div class="form-group col-sm-12 text-center">
                <label id="result"></label>
@@ -107,20 +118,16 @@
             $('.onlyme').not(this).prop('checked', false);
         });
 
-        $('#beck').on('click', function clckF() {
-            window.location = "@Url.Action("Index", "Question")";
-        });
 
         $('#beckC').on('click', function clckF2() {
-            window.history.back();
+            window.location = "@Url.Action("Blackboard", "Publish")";
         });
 
-        $('#edit').on('click', function clckF1() {
-            var number = $('#name').text();
-            window.location = '@Url.Action("Editor", "Question")/'+number;
-        });
 
-        $('#sendAnswer').on('click', function clickU() {
+        var myFunc=function clickU() {
+
+            $("#sendAnswer").off("click");
+
             var elements = document.getElementsByName("only");
             var id = -1;
             for (var i = 0; i < elements.length; i++) {
@@ -130,9 +137,12 @@
                 }
             }
             if (id === -1) {
+                $('#sendAnswer').on('click', myFunc);
                 document.getElementById("result").innerText = "Answer must be selected";
                 return;
             }
+
+            $("#premium").off("click");
 
             var idP = document.getElementById("nameP").innerText;
 
@@ -143,10 +153,19 @@
                 success: function (result) {
                     if (result !== "error") {
                         if (result === "error2") {
-                            window.location='@Url.Action("Logout", "Account")';
+                            window.location = '@Url.Action("Logout", "Account")';
                         }
 
                         var array = result.split("<>");
+
+                        document.getElementById("subButSpan").innerHTML = "";
+                        document.getElementById("beckC").innerHTML = "Continue";
+                        document.getElementById("result").innerText = "Answer saved";
+
+                        $(".onlyme").click(function () {
+                            return false;
+                        });
+
 
                         if (array[0] === "-1") {
                             return;
@@ -156,10 +175,39 @@
                         elements = document.getElementById(nmMsg);
                         elements.className += " text-success";
 
-
                         var elem1 = document.getElementById("numtoken");
                         elem1.innerHTML = array[1];
 
+                    }
+                }
+            });
+        }
+
+        $('#sendAnswer').on('click', myFunc);
+
+        $('#premium').on('click', function clickPre() {
+            var element = document.getElementById("premium");
+            var func = element.name;
+            var element2 = document.getElementById("nameC");
+            var number = element2.innerText;
+            $.ajax({
+                type: "POST",
+                data: { id: number, func: func },
+                url: '@Url.Action("Subscribed", "Channel")',
+                success: function (result) {
+                    if (result !== "error") {
+                        if (result === "error2")
+                            window.location = "@Url.Action("Logout", "Account")";
+                        if (func === "Activate premium") {
+                            element.innerHTML = 'Deactivate premium';
+                            element.name = 'Deactivate premium';
+                        }
+                        else {
+                            if (func === "Deactivate premium") {
+                                element.innerHTML = 'Activate premium';
+                                element.name = 'Activate premium';
+                            }
+                        }
                     }
                 }
             });

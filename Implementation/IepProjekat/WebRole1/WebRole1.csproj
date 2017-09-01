@@ -278,6 +278,8 @@
     <Content Include="Views\Channel\EnterPass.cshtml" />
     <Content Include="Views\Channel\Subscribed.cshtml" />
     <Content Include="Views\Publish\Blackboard.cshtml" />
+    <Content Include="Views\Question\Answers.cshtml" />
+    <Content Include="Views\Question\AnswerDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

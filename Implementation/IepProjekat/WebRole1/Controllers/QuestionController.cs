@@ -590,8 +590,11 @@ namespace WebRole1.Controllers
 
                 publisheds = publisheds.Where(s => s.IdC == chan);
 
-                if (publisheds.Any())
+                subscription = subscription.Where(s => s.IdC==chan);
+
+                if (publisheds.Any() && subscription.Any())
                 {
+                    ViewBag.premium = subscription.First().IsPremium;
                     return View(publisheds.First());
                 }
             }
@@ -689,6 +692,65 @@ namespace WebRole1.Controllers
                 }
             }
             return Content("error2", "text/plain");
+        }
+
+        [HttpGet]
+        public ActionResult Answers()
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Student")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                var responses = from m in db.Responses select m;
+                responses = responses.Where(s => s.IdU == user.IdU);
+                return View(responses);
+            }
+            return RedirectToAction("Logout", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult AnswerDetails(int? idC, int? idP)
+        {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() != "Student")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (idC == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (idP == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            if (users.Any())
+            {
+                User user = users.First();
+                var responses = from m in db.Responses select m;
+                responses = responses.Where(s => s.IdU == user.IdU);
+                responses = responses.Where(s => s.IdC == idC && s.IdP == idP);
+                if (responses.Any())
+                    return View(responses.First());
+            }
+            return RedirectToAction("Logout", "Account");
         }
     }
 
