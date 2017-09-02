@@ -26,6 +26,7 @@
                         if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
                         {
                             <li>@Html.ActionLink("Account", "Info", "Account")</li>
+                            <li>@Html.ActionLink("Buy tokens", "Index", "Order")</li>
                         }
                         if (@HttpContext.Current.Session["type"].ToString() == "Administrator")
                         {
