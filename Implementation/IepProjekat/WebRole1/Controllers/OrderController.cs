@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -133,6 +135,17 @@ namespace WebRole1.Controllers
                 }
                 ViewBag.message = "Transaction successfull";
                 ViewBag.button = "Continue";
+                string userMail = order.User.Mail;
+                string textSubject = "Transaction successfull";
+                string textMail = "You bought " + order.Number + " tokens for " + order.Price + "RSD";
+                MailMessage msg = new MailMessage("studioneer@gmail.com", userMail, textSubject, textMail);
+                SmtpClient sc = new SmtpClient("smtp.gmail.com", 587);
+                sc.UseDefaultCredentials = false;
+                NetworkCredential cre = new NetworkCredential("studioneer@gmail.com", "aspmvc5!");
+                sc.Credentials = cre;
+                sc.EnableSsl = true;
+                sc.Send(msg);
+
             }
             else
             {
