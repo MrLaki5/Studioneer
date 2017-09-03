@@ -27,6 +27,7 @@
                         {
                             <li>@Html.ActionLink("Account", "Info", "Account")</li>
                             <li>@Html.ActionLink("Buy tokens", "Index", "Order")</li>
+                            <li>@Html.ActionLink("Orders", "Orders", "Order")</li>
                         }
                         if (@HttpContext.Current.Session["type"].ToString() == "Administrator")
                         {

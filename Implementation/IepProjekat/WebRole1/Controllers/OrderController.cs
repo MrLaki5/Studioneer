@@ -16,7 +16,6 @@ namespace WebRole1.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-
             if (Session["type"] == null)
             {
                 return RedirectToAction("Login", "Account");
@@ -88,7 +87,7 @@ namespace WebRole1.Controllers
                     }
                     if (price == 0) {
                         return RedirectToAction("Logout", "Account");
-                    }
+                    }                
                     Order order = new Order();
                     order.IdU = user.IdU;
                     order.Number = number;
@@ -96,12 +95,84 @@ namespace WebRole1.Controllers
                     order.State = "waiting on";
                     db.Orders.Add(order);
                     db.SaveChanges();
-                    string userid = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Mail+user.Password+order.IdO, "SHA1");
-                    string returnUrl = HttpContext.Request.Url.Scheme + "://" + HttpContext.Request.Url.Authority + Url.Action("PayRply", "Order");
-                    link = "http://api.centili.com/payment/widget?apikey=" + api + "&price=" + price.ToString() + "&returnurl=" + returnUrl+ "&userid="+userid;
-                    return RedirectToAction(link);
+                    string userid = FormsAuthentication.HashPasswordForStoringInConfigFile(user.Mail + user.Password + order.IdO, "SHA1");
+                    order.Tag = userid;
+                    db.SaveChanges();
+                    //string returnUrl = HttpContext.Request.Url.Scheme + "://" + HttpContext.Request.Url.Authority + Url.Action("PayRply", "Order");
+                    link = "http://api.centili.com/payment/widget?apikey=" + api + "&price=50&userid="+userid;
+                    return Redirect(link);
                 }
             }
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult PayReply(string userid, string status) {
+            var orders = from m in db.Orders select m;
+            orders = orders.Where(s => s.Tag.Equals(userid));
+            Order order = null;
+            if (!orders.Any())
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            else
+            {
+                order = orders.First();
+            }
+            if (string.Compare(order.State, "waiting on") != 0)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            if (string.Compare(status, "success") == 0)
+            {
+                order.User.Balans += order.Number;
+                order.State = "realized";
+                if (Session["token"] != null)
+                {
+                    Session["token"] = order.User.Balans.ToString();
+                }
+                ViewBag.message = "Transaction successfull";
+                ViewBag.button = "Continue";
+            }
+            else
+            {
+                order.State = "rejected";
+                ViewBag.message = "Something went wrong";
+                ViewBag.button = "Try again";
+            }
+            db.SaveChanges();
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() == "Administrator")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Orders() {
+            if (Session["type"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (Session["type"].ToString() == "Administrator")
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+            string email = Session["email"].ToString();
+            var users = from m in db.Users select m;
+            users = users.Where(s => s.Mail.Equals(email));
+            var parameters = from m in db.Parameters select m;
+            if (users.Any())
+            {
+                User user = users.First();
+                var orders = from m in db.Orders select m;
+                orders = orders.Where(s => s.IdU == user.IdU);
+                return View(orders);
+            }   
             return RedirectToAction("Login", "Account");
         }
     }

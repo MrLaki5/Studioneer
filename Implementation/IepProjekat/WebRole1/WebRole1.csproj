@@ -282,6 +282,9 @@
     <Content Include="Views\Question\Answers.cshtml" />
     <Content Include="Views\Question\AnswerDetails.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\PayReply.cshtml" />
+    <Content Include="Views\Channel\ActiveChannels.cshtml" />
+    <Content Include="Views\Order\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

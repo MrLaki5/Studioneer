@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transaction information</h2>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-5">
+            <label class="h1" style="font-size:50px;">@ViewBag.message</label>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-5" style="padding-top:30px;">
+            <a type="link" href=@Url.Action("Index", "Order") id="beck">@ViewBag.button</a>
+        </div>
+    </div>
+</div>

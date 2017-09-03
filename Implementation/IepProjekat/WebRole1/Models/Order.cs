@@ -21,6 +21,9 @@ namespace WebRole1.Models
         [StringLength(20)]
         public string State { get; set; }
 
+        [StringLength(100)]
+        public string Tag { get; set; }
+
         public virtual User User { get; set; }
     }
 }

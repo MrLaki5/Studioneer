@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebRole1.Models.Order>
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Orders</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Order id
+        </th>
+        <th>
+            Number of tokens
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            State
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+    </tr>
+}
+
+</table>

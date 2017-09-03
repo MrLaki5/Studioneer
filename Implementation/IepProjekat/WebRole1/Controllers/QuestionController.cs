@@ -676,6 +676,7 @@ namespace WebRole1.Controllers
                                 }
                                 else {
                                     user.Balans -= tokens;
+                                    Session["token"] = user.Balans;
                                     string tempStr = answers.First().IdA.ToString();
                                     tempStr += "<>";
                                     tempStr += user.Balans.ToString();

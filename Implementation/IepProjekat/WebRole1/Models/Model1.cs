@@ -65,6 +65,10 @@ namespace WebRole1.Models
                 .Property(e => e.State)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Order>()
+                .Property(e => e.Tag)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Question>()
                 .Property(e => e.Title)
                 .IsUnicode(false);
