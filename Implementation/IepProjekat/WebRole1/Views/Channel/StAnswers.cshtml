@@ -6,14 +6,11 @@
 }
 
 <h2>Student answers</h2>
-
-
 <p>
     <span style="cursor:pointer">
         <a href="@Url.Action("History", "Channel")?id=@ViewBag.chann">Back</a>
     </span>
 </p>
-
 <table class="table">
     <tr>
         <th>
@@ -29,7 +26,6 @@
             Answer
         </th>
     </tr>
-
 @foreach (var item in Model)
 {
     if (@item.Answer.IsCorrect == 1)
@@ -67,5 +63,4 @@
         </tr>
     }
 }
-
 </table>

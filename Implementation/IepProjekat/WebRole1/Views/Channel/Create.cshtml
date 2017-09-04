@@ -3,9 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <h2>Channel create</h2>
-
 <form id="FormQ">
     <div class="form-group">
         @Html.Label("Channel name:")
@@ -26,18 +24,15 @@
 
     <div class="form-group">
         <button type="button" class="btn btn-primary" id="beck"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp Back</button>
-        <button type="button" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-print"></span>&nbsp Save</button>
+        <button type="button" class="btn btn-primary" id="butt1"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp Save</button>
     </div>
     <div class="form-group">
         @Html.Label(" ", new { id = "result" })
     </div>
-
 </form>
 <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
 <script type="text/javascript">
-
     $(document).ready(function () {
-
         $("#FormQ").validate({
             rules: {
                 ttitle: "required",
@@ -64,14 +59,12 @@
                 }
             }
         });
-
         $('#butt1').on('click', function clckF1() {
             if (!$("#FormQ").valid())
                 return;
             var Name = $('#ttitle').val();
             var Password = $('#password').val();
             var Cpassword = $('#cpassword').val();
-
             $.ajax({
                 type: "POST",
                 data: { name: Name, password: Password, cpassword: Cpassword },
@@ -84,13 +77,11 @@
                 }
             });
         });
-
         $('#beck').on('click', function clckF() {
             window.location = "@Url.Action("Index", "Channel")";
         });
     });
 </script>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

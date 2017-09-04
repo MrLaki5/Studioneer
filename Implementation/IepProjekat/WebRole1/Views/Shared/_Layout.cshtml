@@ -25,8 +25,8 @@
                     {
                         if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
                         {
-                            <li>@Html.ActionLink("Account", "Info", "Account")</li>
-                            <li>@Html.ActionLink("Buy tokens", "Index", "Order")</li>
+                            <li>@Html.ActionLink("Info", "Info", "Account")</li>
+                            <li>@Html.ActionLink("Shop", "Index", "Order")</li>
                             <li>@Html.ActionLink("Orders", "Orders", "Order")</li>
                         }
                         if (@HttpContext.Current.Session["type"].ToString() == "Administrator")
@@ -42,9 +42,9 @@
                         if (@HttpContext.Current.Session["type"].ToString() == "Student")
                         {
                             <li>@Html.ActionLink("New channels", "ActiveChannels", "Channel")</li>
-                            <li>@Html.ActionLink("Subscriptions", "Subscribed", "Channel")</li>
-                            <li>@Html.ActionLink("Blackboard", "Blackboard", "Publish")</li>
-                            <li>@Html.ActionLink("My answers", "Answers", "Question")</li>
+                            <li>@Html.ActionLink("Subs", "Subscribed", "Channel")</li>
+                            <li>@Html.ActionLink("Board", "Blackboard", "Publish")</li>
+                            <li>@Html.ActionLink("Answers", "Answers", "Question")</li>
                         }
                     }
                 </ul>
