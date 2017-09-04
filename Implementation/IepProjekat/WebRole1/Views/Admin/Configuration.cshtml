@@ -6,7 +6,6 @@
 }
 
 <h2>Configuration</h2>
-
 @using (Html.BeginForm("Configuration", "Admin"))
 {
     @Html.AntiForgeryToken()
@@ -68,8 +67,12 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+                @if (@ViewBag.message != null)
+                {
+                    <label>@ViewBag.message</label>
+                }
             </div>
-        </div>
+        </div>    
     </div>
 }
 

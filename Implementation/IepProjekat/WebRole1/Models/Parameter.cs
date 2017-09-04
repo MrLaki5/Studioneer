@@ -11,16 +11,22 @@ namespace WebRole1.Models
         [Key]
         public int IdP { get; set; }
 
+        [Required]
         public int? AnswerNumber { get; set; }
 
+        [Required]
         public int? SilverNumber { get; set; }
 
+        [Required]
         public int? GoldNumber { get; set; }
 
+        [Required]
         public int? PlatinumNumber { get; set; }
 
+        [Required]
         public int? UnlockNumber { get; set; }
 
+        [Required]
         public int? PremiumNumber { get; set; }
     }
 }
