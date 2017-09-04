@@ -18,3 +18,13 @@
   
 2017-09-04 16:08:25,482 WebRole1.Controllers.PublishController.Index [27] ERROR - Session missing 
   
+2017-09-04 18:51:00,038 WebRole1.Controllers.QuestionController.Details [111] ERROR - Session missing 
+  
+2017-09-04 18:52:33,955 WebRole1.Controllers.QuestionController.Answering [643] ERROR - data provided is incorect 
+  
+2017-09-04 18:58:53,605 WebRole1.Controllers.AdminController.Approvals [39] ERROR - Session missing 
+  
+2017-09-04 19:01:40,917 WebRole1.Controllers.PublishController.Index [27] ERROR - Session missing 
+  
+2017-09-04 19:04:49,643 WebRole1.Controllers.OrderController.Index [22] ERROR - Session missing 
+  

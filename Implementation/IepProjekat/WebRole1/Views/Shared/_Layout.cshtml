@@ -22,13 +22,7 @@
                 <ul class="nav navbar-nav">
                     
                     @if (@HttpContext.Current.Session["type"] != null)
-                    {
-                        if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
-                        {
-                            <li>@Html.ActionLink("Info", "Info", "Account")</li>
-                            <li>@Html.ActionLink("Shop", "Index", "Order")</li>
-                            <li>@Html.ActionLink("Orders", "Orders", "Order")</li>
-                        }
+                    {                        
                         if (@HttpContext.Current.Session["type"].ToString() == "Administrator")
                         {
                             <li>@Html.ActionLink("Configuration", "Configuration", "Admin")</li>
@@ -45,6 +39,12 @@
                             <li>@Html.ActionLink("Subs", "Subscribed", "Channel")</li>
                             <li>@Html.ActionLink("Board", "Blackboard", "Publish")</li>
                             <li>@Html.ActionLink("Answers", "Answers", "Question")</li>
+                        }
+                        if ((@HttpContext.Current.Session["type"].ToString() == "Student") || @HttpContext.Current.Session["type"].ToString() == "Professor")
+                        {                      
+                            <li>@Html.ActionLink("Shop", "Index", "Order")</li>
+                            <li>@Html.ActionLink("Orders", "Orders", "Order")</li>
+                            <li>@Html.ActionLink("Info", "Info", "Account")</li>
                         }
                     }
                 </ul>
