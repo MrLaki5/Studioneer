@@ -616,3 +616,5 @@ D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.xml
 D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Host.SystemWeb.xml
 D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\Microsoft.Owin.Security.xml
 D:\auctioneer\Implementation\IepProjekat\WebRole1\obj\Debug\WebRole1.csprojResolveAssemblyReference.cache
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\log4net.dll
+D:\auctioneer\Implementation\IepProjekat\WebRole1\bin\log4net.xml

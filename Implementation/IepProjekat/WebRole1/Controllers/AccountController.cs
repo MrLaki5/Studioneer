@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Net;
 using WebRole1.Models;
 using System.Web.Security;
+using log4net;
 
 namespace WebRole1.Controllers
 {
@@ -56,6 +57,8 @@ namespace WebRole1.Controllers
         [HttpPost]
         public ActionResult Login(string email, string password)
         {
+            ILog log = LogManager.GetLogger("log");
+            log.Error("Login try");
             if (String.IsNullOrEmpty(email))
                 return Content("Enter email", "text/plain");
             if (String.IsNullOrEmpty(password))
