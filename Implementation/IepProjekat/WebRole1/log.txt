@@ -10,3 +10,11 @@
   
 2017-09-04 12:59:50,520 WebRole1.Controllers.AccountController.Info [36] ERROR - Session missing 
   
+2017-09-04 14:44:23,880 WebRole1.Controllers.ChannelController.ActiveChannels [391] ERROR - Session missing 
+  
+2017-09-04 14:46:37,014 WebRole1.Controllers.ChannelController.Index [23] ERROR - Session missing 
+  
+2017-09-04 15:36:22,077 WebRole1.Controllers.OrderController.Index [22] ERROR - Session missing 
+  
+2017-09-04 16:08:25,482 WebRole1.Controllers.PublishController.Index [27] ERROR - Session missing 
+  

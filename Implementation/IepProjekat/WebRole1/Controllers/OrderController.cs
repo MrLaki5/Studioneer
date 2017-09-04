@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using log4net;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebRole1.Models;
@@ -12,23 +10,23 @@ namespace WebRole1.Controllers
 {
     public class OrderController : Controller
     {
-
         private Model1 db = new Model1();
+        private ILog log = LogManager.GetLogger("log");
 
+        //Displays page for chooseing package
         [HttpGet]
         public ActionResult Index()
         {
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() == "Administrator")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
-            string email = Session["email"].ToString();
-            var users = from m in db.Users select m;
-            users = users.Where(s => s.Mail.Equals(email));
             var parameters = from m in db.Parameters select m;
             if (parameters.Any())
             {
@@ -36,23 +34,23 @@ namespace WebRole1.Controllers
                 ViewBag.silver = par.SilverNumber;
                 ViewBag.gold = par.GoldNumber;
                 ViewBag.platinum = par.PlatinumNumber;
-                if (users.Any())
-                {
-                    return View();
-                }
-            }         
+                return View();
+            }
+            log.Error("parameters not found in database");
             return RedirectToAction("Login", "Account");
         }
 
+        //Checks witch package and builds link for centili
         [HttpPost]
         public ActionResult Index(int package) {
-
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() == "Administrator")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
             string email = Session["email"].ToString();
@@ -88,6 +86,7 @@ namespace WebRole1.Controllers
                             break;
                     }
                     if (price == 0) {
+                        log.Error("package number not exsisting");
                         return RedirectToAction("Logout", "Account");
                     }                
                     Order order = new Order();
@@ -105,9 +104,11 @@ namespace WebRole1.Controllers
                     return Redirect(link);
                 }
             }
+            log.Error("parameters not found in database");
             return RedirectToAction("Login", "Account");
         }
 
+        //get answer from centili about transaction and redirect user
         [HttpGet]
         public ActionResult PayReply(string userid, string status) {
             var orders = from m in db.Orders select m;
@@ -115,6 +116,7 @@ namespace WebRole1.Controllers
             Order order = null;
             if (!orders.Any())
             {
+                log.Error("order not exsisting in db, tag: "+userid);
                 return RedirectToAction("Logout", "Account");
             }
             else
@@ -123,6 +125,7 @@ namespace WebRole1.Controllers
             }
             if (string.Compare(order.State, "waiting on") != 0)
             {
+                log.Error("order already done, tag: "+userid);
                 return RedirectToAction("Logout", "Account");
             }
             if (string.Compare(status, "success") == 0)
@@ -156,23 +159,28 @@ namespace WebRole1.Controllers
             db.SaveChanges();
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() == "Administrator")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
             return View();
         }
 
+        //displays all orders from one user
         [HttpGet]
         public ActionResult Orders() {
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() == "Administrator")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
             string email = Session["email"].ToString();
@@ -185,7 +193,8 @@ namespace WebRole1.Controllers
                 var orders = from m in db.Orders select m;
                 orders = orders.Where(s => s.IdU == user.IdU);
                 return View(orders);
-            }   
+            }
+            log.Error("user not found in db");
             return RedirectToAction("Login", "Account");
         }
     }

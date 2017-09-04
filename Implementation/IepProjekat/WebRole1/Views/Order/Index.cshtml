@@ -115,6 +115,11 @@
 </style>
 <h2>Buy tokens</h2>
 
+@{ 
+    var sp = ViewBag.Silver * 50;
+    var gp = ViewBag.Gold * 50;
+    var pp = ViewBag.Platinum * 50;
+}
 
 @using (Html.BeginForm("Index", "Order"))
 {
@@ -131,7 +136,7 @@
                     <div class="panel-body">
                         <div class="the-price">
                             <h1>
-                                200<span class="subscript">din</span>
+                                @{ WriteLiteral(sp);}<span class="subscript">din</span>
                             </h1>
                         </div>
                         <table class="table">
@@ -181,7 +186,7 @@
                     <div class="panel-body">
                         <div class="the-price">
                             <h1>
-                                350<span class="subscript">din</span>
+                                @{ WriteLiteral(gp);}<span class="subscript">din</span>
                             </h1>
                         </div>
                         <table class="table">
@@ -222,7 +227,7 @@
                     <div class="panel-body">
                         <div class="the-price">
                             <h1>
-                                400<span class="subscript">din</span>
+                                @{ WriteLiteral(pp);}<span class="subscript">din</span>
                             </h1>
                         </div>
                         <table class="table">

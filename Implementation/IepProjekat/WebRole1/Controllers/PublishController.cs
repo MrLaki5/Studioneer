@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using log4net;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebRole1.Hubs;
@@ -12,20 +12,28 @@ namespace WebRole1.Controllers
 {
     public class PublishController : Controller
     {
-        private Model1 db = new Model1();
 
+        private Model1 db = new Model1();
+        private ILog log = LogManager.GetLogger("log");
+
+        //Professor:----------------------------------------------------------------------
+
+        //Displays all professors active channels for publishing the story
         [HttpGet]
         public ActionResult Index(int? id)
         {
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() != "Professor")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
             if (id == null) {
+                log.Error("id argument missing");
                 return RedirectToAction("Logout", "Account");
             }
 
@@ -51,29 +59,36 @@ namespace WebRole1.Controllers
                     return View(channels);
                 }
             }
+            log.Error("user missing in db");
             return RedirectToAction("Logout", "Account");
         }
 
+        //Updates database and sends SignalR with new published story on channel
         [HttpPost]
         public ActionResult Index()
         {
             if (Session["type"] == null)
             {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
             }
             if (Session["type"].ToString() != "Professor")
             {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
             }
             if (Request.Form["idQ"] == null)
             {
+                log.Error("arguments missing");
                 return RedirectToAction("Logout", "Account");
             }
             string temp= Request.Form["idQ"];
             int idP=0;
-            if (!Int32.TryParse(temp,out idP))
+            if (!Int32.TryParse(temp, out idP))
+            {
+                log.Error("idQ not integer");
                 return RedirectToAction("Logout", "Account");
-
+            }
 
             string email = Session["email"].ToString();
             var users = from m in db.Users select m;
@@ -191,17 +206,25 @@ namespace WebRole1.Controllers
                     }
                 }
             }
+            log.Error("user, channel and question not mergable in db");
             return RedirectToAction("Logout", "Account");
         }
 
-        //Student
+        //Student:------------------------------------------------------------------------
 
+        //loads all unanswerd questions for all active channels
         [HttpGet]
         public ActionResult Blackboard() {
             if (Session["type"] == null)
+            {
+                log.Error("Session missing");
                 return RedirectToAction("Login", "Account");
+            }
             if (Session["type"].ToString() != "Student")
+            {
+                log.Error("wrong user type");
                 return RedirectToAction("Logout", "Account");
+            }
             var subscription = from m in db.Subscriptions select m;
             var users = from m in db.Users select m;
             string email = Session["email"].ToString();
@@ -236,6 +259,7 @@ namespace WebRole1.Controllers
                 ViewBag.chann = tempL;
                 return View(publisheds);
             }
+            log.Error("input variables wrong");
             return RedirectToAction("Logout", "Account");
         }
     }
