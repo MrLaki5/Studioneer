@@ -147,7 +147,15 @@ namespace WebRole1.Controllers
             user.Status = 0;
             user.Type = "Undefined";
             db.Users.Add(user);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                log.Error("error in saving to db, err: "+ ex.ToString());
+                return Content("Validation not successfull", "text/plain");
+            }
             return Content("Created", "text/plain");
         }
     }

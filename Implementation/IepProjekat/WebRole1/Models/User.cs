@@ -22,10 +22,10 @@ namespace WebRole1.Models
         [Key]
         public int IdU { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string Name { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string Mail { get; set; }
 
         [StringLength(100)]
@@ -36,7 +36,7 @@ namespace WebRole1.Models
         [StringLength(20)]
         public string Type { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string Lastname { get; set; }
 
         public int? Status { get; set; }

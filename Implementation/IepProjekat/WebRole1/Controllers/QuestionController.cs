@@ -705,7 +705,7 @@ namespace WebRole1.Controllers
                     var answers = from m in db.Answers select m;
                     answers = answers.Where(s => s.IdP == quest.IdP);
                     answers = answers.Where(s => s.IsCorrect == 1);
-                    var answers1 = answers;         
+                    var answers1 = from m in db.Answers select m;
                     answers1 = answers1.Where( s=> s.IdA==answer);
                     if (answers1.Any() && answers.Any()) {
                         subscription = subscription.Where(s => s.IdC == pubb.IdC);
