@@ -33,11 +33,11 @@
 </div>
 
 
-@if (@Model.Question.ImageName != null)
+@if (@Model.Question.Image != null)
 {
     <label>Image:</label><br />
-        <img id='img-upload' src="/Images/@Model.Question.ImageName" />
-        <br />
+        <img src="data:image;base64,@System.Convert.ToBase64String(@Model.Question.Image)" id="img-upload"/>
+        <br/>
 }
 
 <label>Answers:</label><br />

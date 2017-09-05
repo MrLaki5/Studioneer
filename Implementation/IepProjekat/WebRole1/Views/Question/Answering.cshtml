@@ -53,11 +53,10 @@
     </div>
 
     <div class="row">
-        @if (@Model.Question.ImageName != null)
+        @if (@Model.Question.Image != null)
             {
             <div class="col-sm-4 col-sm-offset-4">
-                
-                <img class="img-responsive imgz" id='img-upload' src="/Images/@Model.Question.ImageName" />
+                <img src="data:image;base64,@System.Convert.ToBase64String(@Model.Question.Image)" id="img-upload" class="img-responsive imgz"/>
                 <br />
             </div>
         }

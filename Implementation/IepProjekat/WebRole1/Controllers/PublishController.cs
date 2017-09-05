@@ -117,8 +117,9 @@ namespace WebRole1.Controllers
                     question.IsLocked = 1;
                     question.CreationTime = questionOld.CreationTime;
                     question.LastLock = questionOld.LastLock;
-                    question.Image = questionOld.Image;
-                    question.ImageName = questionOld.ImageName;
+                    if (questionOld.Image != null) {
+                        question.Image = questionOld.Image.ToArray();
+                    }
                     List<Published> PubList = new List<Published>();
                     List<Answer> AnsList = new List<Answer>();
 

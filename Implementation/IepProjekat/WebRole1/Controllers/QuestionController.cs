@@ -357,9 +357,9 @@ namespace WebRole1.Controllers
                     locked = 1;
                 }
             }
-            string path = "";
-            string imgname = "";
-            bool succ = false;
+            //string path = "";
+            //string imgname = "";
+            //bool succ = false;
             if (file != null)
             {
                 string exten = Path.GetExtension(file.FileName).ToLower();
@@ -373,6 +373,7 @@ namespace WebRole1.Controllers
                     ViewBag.err = "Image is too big";
                     return View();
                 }
+                /*
                 string pic = System.IO.Path.GetFileName(file.FileName);
                 int count = 0;
                 string pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pic, "SHA1");
@@ -397,17 +398,14 @@ namespace WebRole1.Controllers
                         System.IO.File.Delete(filePath);
                     }
                 }*/
+                question1.Image = new byte[file.ContentLength];
+                file.InputStream.Read(question1.Image, 0, question1.Image.Length);
             }
             question1.Title = title;
             question1.Text = text;
             question1.IsLocked = locked;
             if (locked == 1)
-                question1.LastLock = DateTime.UtcNow;
-            if (succ)
-            {
-                question1.Image = path;
-                question1.ImageName = imgname;
-            }
+                question1.LastLock = DateTime.UtcNow;         
             db.SaveChanges();
             foreach (var item in question1.Answers)
             {
@@ -528,10 +526,12 @@ namespace WebRole1.Controllers
                     locked = 1;
                 }
             }
-            string path = "";
-            string imgname = "";
-            bool succ = false;
+            //string path = "";
+            //string imgname = "";
+            Question question = new Question();
+            //bool succ = false;
             if (file != null) {
+                
                 string exten = Path.GetExtension(file.FileName).ToLower();
                 if ((exten != ".jpg") && (exten != ".jpeg") && (exten != ".png")){       //bad type of file check
                     ViewBag.err = "Image is wrong format";
@@ -541,6 +541,7 @@ namespace WebRole1.Controllers
                     ViewBag.err = "Image is too big";
                     return View();
                 }
+                /*
                 string pic = System.IO.Path.GetFileName(file.FileName);
                 int count = 0;
                 string pom = FormsAuthentication.HashPasswordForStoringInConfigFile(pic, "SHA1");
@@ -556,9 +557,12 @@ namespace WebRole1.Controllers
                 }
                 pic = pom;
                 file.SaveAs(path);                                        // file is uploaded
-                succ = true;
+                succ = true;*/
+                question.Image = new byte[file.ContentLength];
+                file.InputStream.Read(question.Image, 0, question.Image.Length);
+                //succ = true;
             }
-            Question question = new Question();
+            
             question.Title = title;
             question.Text = text;
             question.IdU = idU;
@@ -567,10 +571,6 @@ namespace WebRole1.Controllers
             question.CreationTime = DateTime.UtcNow;
             if (locked == 1)
                 question.LastLock = question.CreationTime;
-            if (succ){
-                question.Image = path;
-                question.ImageName = imgname;
-            }
             db.Questions.Add(question);
             db.SaveChanges();
             for (int i=0;i< ViewBag.k; i++){
