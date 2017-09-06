@@ -14,3 +14,7 @@
   
 2017-09-05 10:21:50,312 WebRole1.Controllers.QuestionController.Answering [593] ERROR - Session missing 
   
+2017-09-05 14:01:24,921 WebRole1.Controllers.ChannelController.History [287] ERROR - Session missing 
+  
+2017-09-05 14:10:29,195 WebRole1.Controllers.PublishController.Blackboard [221] ERROR - Session missing 
+  

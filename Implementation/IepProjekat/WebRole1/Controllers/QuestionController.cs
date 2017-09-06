@@ -368,7 +368,7 @@ namespace WebRole1.Controllers
                     ViewBag.err = "Image is wrong format";
                     return View();
                 }
-                if (file.ContentLength > 30000)
+                if (file.ContentLength > 1000000)
                 {                                          //size of file check in bytes
                     ViewBag.err = "Image is too big";
                     return View();
@@ -537,7 +537,7 @@ namespace WebRole1.Controllers
                     ViewBag.err = "Image is wrong format";
                     return View();
                 }
-                if (file.ContentLength > 30000){                                          //size of file check in bytes
+                if (file.ContentLength > 1000000){                                          //size of file check in bytes
                     ViewBag.err = "Image is too big";
                     return View();
                 }
