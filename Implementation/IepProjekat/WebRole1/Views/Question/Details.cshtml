@@ -104,7 +104,7 @@ else
             $.ajax({
             type: "POST",
             data: { id: number },
-            url: '@Url.Action("Index", "Question")',
+            url: '@Url.Action("IndexUp", "Question")',
                 success: function (result) {
                     if (result !== "error") {
                         var elem1 = document.getElementById("numtoken");
