@@ -1,4 +1,4 @@
-## Web service for pupil online testing:
+## Web service for student online testing:
 * Registration and login system for teachers and students
 * Cretion and answering of questions
 * Creation of comunication channels
